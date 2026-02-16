@@ -21,8 +21,8 @@ class TT100KClassificationDataset(Dataset):
         os.makedirs(save_dir, exist_ok=True)
 
         df = create_or_get_csv(root, root_dir_save, split).reset_index(drop=True)
-        self.categories = create_or_get_categories(root_dir_save)
-        self.labels_dict = {v: int(k) for k, v in self.categories.items()}
+        categories = create_or_get_categories(root_dir_save)
+        self.labels_dict = {v: int(k) for k, v in categories.items()}
         self.labels = df['category'].map(self.labels_dict).values
 
         self.cropped_paths = [
@@ -104,4 +104,4 @@ def create_or_get_categories(root):
     return categories
 
 if __name__ == '__main__':
-    TT100KClassificationDataset(root='data/tt100k', split='test')
+    TT100KClassificationDataset(root='data/tt100k', split='train')
