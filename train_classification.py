@@ -105,7 +105,7 @@ def train(Dataset: Type[TT100KClassificationDataset]):
             drop_last=False
         )
 
-        model = MambaClassifier(dims=3, depth=DEEP, num_classes=153).to(DEVICE)
+        model = MambaClassifier(dims=3, depth=DEEP, num_classes=151).to(DEVICE)
         optimizer = torch.optim.Adam(model.parameters(), lr=LR)
         criterion = torch.nn.CrossEntropyLoss()
 
