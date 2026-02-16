@@ -195,7 +195,7 @@ def train(Dataset: Type[TT100KClassificationDataset]):
             writer.add_scalar(f"Fold {fold + 1}/Validation/F1 score", f1_score_epoch, epoch + 1)
             plot_confusion_matrix(
                 writer=writer,
-                cm=confusion_matrix(list_label, list_prediction),
+                cm=confusion_matrix(list_label, list_prediction, labels=train_dataset.labels_dict.values()),
                 class_names=train_dataset.labels_dict.values(),
                 epoch=epoch + 1,
                 fold=fold + 1
@@ -239,7 +239,7 @@ def train(Dataset: Type[TT100KClassificationDataset]):
 
         plot_confusion_matrix(
             writer=writer,
-            cm=confusion_matrix(list_label, list_prediction),
+            cm=confusion_matrix(list_label, list_prediction, labels=train_dataset.labels_dict.values()),
             class_names=train_dataset.labels_dict.values(),
             epoch=EPOCHS,
             train=False,
