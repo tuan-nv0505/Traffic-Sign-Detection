@@ -39,7 +39,7 @@ class TT100KClassificationDataset(Dataset):
 
 
 def create_or_get_csv(root, split='train'):
-    path_csv = os.path.join(root, f'{split}_objects.csv')
+    path_csv = os.path.join(f'{split}_objects.csv')
     path_json = os.path.join(root, f'{split}.json')
     if os.path.exists(path_csv):
         return pd.read_csv(path_csv)
@@ -68,13 +68,13 @@ def create_or_get_csv(root, split='train'):
     return df
 
 def create_or_get_categories(root):
-    if os.path.exists(os.path.join(root, 'categories.json')):
-        with open(os.path.join(root, 'categories.json'), 'r') as f:
+    if os.path.exists(os.path.join('.', 'categories.json')):
+        with open(os.path.join('.', 'categories.json'), 'r') as f:
             return json.load(f)
 
-    df = pd.read_csv(os.path.join(root, 'train_objects.csv'))
+    df = pd.read_csv(os.path.join('.', 'train_objects.csv'))
     categories = {i: category for i, category in enumerate(df['category'].unique())}
-    with open(os.path.join(root, 'categories.json'), 'w') as f:
+    with open(os.path.join('.', 'categories.json'), 'w') as f:
         json.dump(categories, f, indent=4)
 
     return categories
