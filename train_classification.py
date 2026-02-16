@@ -80,7 +80,6 @@ def train(Dataset: Type[TT100KClassificationDataset]):
 
     final_best_checkpoint = os.path.join(TRAINED, "final_best_checkpoint.pth")
     final_best_f1_score = 0
-
     for fold in range(start_fold, FOLDS):
         print(f"\n" + "=" * 20 + f" TRAIN FOLD {fold + 1}/{FOLDS} " + "=" * 20)
 

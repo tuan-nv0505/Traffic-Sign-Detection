@@ -4,7 +4,7 @@ import torch
 import torch.nn as nn
 from models.backbone.conv import ConvNet
 from models.backbone.vmamba import VSSBlock, PatchMerging2D
-from models.backbone.utils import Permute
+from models.backbone.permute import Permute
 
 
 class BackBone(nn.Module):
