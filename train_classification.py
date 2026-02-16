@@ -196,7 +196,7 @@ def train(Dataset: Type[TT100KClassificationDataset]):
             plot_confusion_matrix(
                 writer=writer,
                 cm=confusion_matrix(list_label, list_prediction),
-                class_names=train_dataset.labels,
+                class_names=train_dataset.labels_dict.values(),
                 epoch=epoch + 1,
                 fold=fold + 1
             )
@@ -240,7 +240,7 @@ def train(Dataset: Type[TT100KClassificationDataset]):
         plot_confusion_matrix(
             writer=writer,
             cm=confusion_matrix(list_label, list_prediction),
-            class_names=train_dataset.labels,
+            class_names=train_dataset.labels_dict.values(),
             epoch=EPOCHS,
             train=False,
             fold=fold + 1
