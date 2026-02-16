@@ -1,9 +1,13 @@
 import json
+
+import cv2
 from PIL import Image
 from torch.utils.data import Dataset
 from torchvision.transforms import Compose, ToTensor
 import pandas as pd
 import os
+
+from tqdm import tqdm
 
 
 class TT100KClassificationDataset(Dataset):
@@ -18,16 +22,31 @@ class TT100KClassificationDataset(Dataset):
         self.labels_dict = {v: k for k, v in categories.items()}
 
         self.labels = df['category'].map(self.labels_dict).values
-        self.paths = [os.path.join(root, p) for p in df['path']]
-        self.bbox = df[['xmin', 'ymin', 'xmax', 'ymax']].astype(int).values.tolist()
+
+        self.cropped_paths = []
+        save_dir = os.path.abspath(os.path.join(root, f'{split}_classification'))
+        os.makedirs(save_dir, exist_ok=True)
+
+        progress_bar = tqdm(df.iterrows(), total=len(df))
+        for i, row in progress_bar:
+            progress_bar.set_description(f'Processing {row["image_id"]}_{i}.jpg')
+
+            save_path = os.path.join(save_dir, f'{row["image_id"]}_{i}.jpg')
+            if os.path.exists(save_path):
+                continue
+            img = cv2.imread(os.path.join(root, row['path']))
+            h, w = img.shape[:2]
+            ymin, ymax, xmin, xmax = row[['ymin', 'ymax', 'xmin', 'xmax']].values
+            crop_img = img[max(0, int(ymin)):min(h, int(ymax)), max(0, int(xmin)):min(w, int(xmax)), :]
+
+            self.cropped_paths.append(save_path)
+            cv2.imwrite(save_path, crop_img)
 
     def __len__(self):
         return len(self.labels)
 
     def __getitem__(self, idx):
-        image = Image.open(self.paths[idx]).convert('RGB')
-        xmin, ymin, xmax, ymax = self.bbox[idx]
-        image = image.crop((xmin, ymin, xmax, ymax))
+        image = Image.open(self.cropped_paths[idx])
         label = int(self.labels[idx])
 
         if self.transforms:
@@ -38,7 +57,7 @@ class TT100KClassificationDataset(Dataset):
 
 
 def create_or_get_csv(root, split='train'):
-    path_csv = os.path.join(f'{split}_objects.csv')
+    path_csv = os.path.join(root, f'{split}_objects.csv')
     path_json = os.path.join(root, f'{split}.json')
     if os.path.exists(path_csv):
         return pd.read_csv(path_csv)
@@ -67,31 +86,16 @@ def create_or_get_csv(root, split='train'):
     return df
 
 def create_or_get_categories(root):
-    if os.path.exists(os.path.join('.', 'categories.json')):
-        with open(os.path.join('.', 'categories.json'), 'r') as f:
+    if os.path.exists(os.path.join(root, 'categories.json')):
+        with open(os.path.join(root, 'categories.json'), 'r') as f:
             return json.load(f)
 
-    df = pd.read_csv(os.path.join('.', 'train_objects.csv'))
+    df = pd.read_csv(os.path.join(root, 'train_objects.csv'))
     categories = {i: category for i, category in enumerate(df['category'].unique())}
-    with open(os.path.join('.', 'categories.json'), 'w') as f:
+    with open(os.path.join(root, 'categories.json'), 'w') as f:
         json.dump(categories, f, indent=4)
 
     return categories
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+if __name__ == '__main__':
+    TT100KClassificationDataset(root='data/tt100k', split='test')

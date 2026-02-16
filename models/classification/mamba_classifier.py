@@ -16,3 +16,7 @@ class MambaClassifier(nn.Module):
         x = self.backbone(x)
         x = self.classifier(x)
         return x
+
+if __name__ == '__main__':
+    x = torch.randn(1, 3, 224, 224)
+    model = MambaClassifier(dims=3, depth=4, num_classes=151)
