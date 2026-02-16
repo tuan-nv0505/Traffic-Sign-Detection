@@ -195,7 +195,7 @@ def train(Dataset: Type[TT100KClassificationDataset]):
             writer.add_scalar(f"Fold {fold + 1}/Validation/F1 score", f1_score_epoch, epoch + 1)
             plot_confusion_matrix(
                 writer=writer,
-                cm=confusion_matrix(list_label, list_prediction, labels=sorted(train_dataset.labels_dict.values())),
+                cm=confusion_matrix(list_label, list_prediction, labels=list(map(int, train_dataset.labels_dict.values()))),
                 class_names=sorted(train_dataset.labels_dict.values()),
                 epoch=epoch + 1,
                 fold=fold + 1
@@ -213,7 +213,7 @@ def train(Dataset: Type[TT100KClassificationDataset]):
 
         with torch.no_grad():
             for images, labels_val in test_dataloader:
-                images = images.to(DEVICE)
+                images = images.to(DEVICE).float()
                 labels_val = labels_val.to(DEVICE)
                 outputs = model(images)
                 total_loss_test += criterion(outputs, labels_val).item()
