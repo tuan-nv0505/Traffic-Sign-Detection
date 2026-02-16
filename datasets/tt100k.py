@@ -96,7 +96,7 @@ def create_or_get_categories(root):
         with open(os.path.join(root, 'categories.json'), 'r') as f:
             return json.load(f)
 
-    df = pd.read_csv(os.path.join(root, 'train_objects.csv'))
+    df = pd.read_csv(os.path.join(root, 'train_classification.csv'))
     categories = {i: category for i, category in enumerate(df['category'].unique())}
     with open(os.path.join(root, 'categories.json'), 'w') as f:
         json.dump(categories, f, indent=4)
