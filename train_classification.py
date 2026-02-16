@@ -106,6 +106,7 @@ def train(Dataset: Type[TT100KClassificationDataset]):
         )
 
         model = MambaClassifier(dims=3, depth=DEEP, num_classes=151).to(DEVICE)
+        model.load_state_dict(torch.load('./final_best_checkpoint.pth', weights_only=True), strict=False)
         optimizer = torch.optim.Adam(model.parameters(), lr=LR)
         criterion = torch.nn.CrossEntropyLoss()
 
