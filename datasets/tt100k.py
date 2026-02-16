@@ -28,7 +28,6 @@ class TT100KClassificationDataset(Dataset):
         image = Image.open(self.paths[idx]).convert('RGB')
         xmin, ymin, xmax, ymax = self.bbox[idx]
         image = image.crop((xmin, ymin, xmax, ymax))
-        print(ToTensor()(image).shape)
         label = int(self.labels[idx])
 
         if self.transforms:
