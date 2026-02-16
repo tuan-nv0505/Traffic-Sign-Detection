@@ -101,7 +101,6 @@ def get_mean_and_std(dataset, workers=4):
 
     for images, _ in data_loader:
         b = images.size(0)
-        print(images.shape)
 
         batch_mean = torch.mean(images, dim=[0, 2, 3])
         batch_mean_sq = torch.mean(images ** 2, dim=[0, 2, 3])
