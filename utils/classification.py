@@ -100,7 +100,6 @@ def get_mean_and_std(dataset, workers=4):
     mean_x_squared = torch.zeros(3)
 
     for images, _ in data_loader:
-        print(images.shape)
         b = images.size(0)
 
         batch_mean = torch.mean(images, dim=[0, 2, 3])
