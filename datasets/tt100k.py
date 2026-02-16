@@ -15,49 +15,55 @@ class TT100KClassificationDataset(Dataset):
         super().__init__()
         self.transforms = transforms
 
-        df = create_or_get_csv(root, split).reset_index(drop=True)
-
-        categories = create_or_get_categories(root)
-        self.categories = {int(k): v for k, v in categories.items()}
-        self.labels_dict = {v: k for k, v in categories.items()}
-
-        self.labels = df['category'].map(self.labels_dict).values
-
-        self.cropped_paths = []
-        save_dir = os.path.abspath(os.path.join(root, f'{split}_classification'))
+        root_dir_save = os.path.abspath('data/tt100k')
+        os.makedirs(root_dir_save, exist_ok=True)
+        save_dir = os.path.join(root_dir_save, f'{split}_classification')
         os.makedirs(save_dir, exist_ok=True)
 
-        progress_bar = tqdm(df.iterrows(), total=len(df))
-        for i, row in progress_bar:
-            progress_bar.set_description(f'Processing {row["image_id"]}_{i}.jpg')
+        df = create_or_get_csv(root, root_dir_save, split).reset_index(drop=True)
+        categories = create_or_get_categories(root)
+        self.labels_dict = {v: int(k) for k, v in categories.items()}
+        self.labels = df['category'].map(self.labels_dict).values
 
-            save_path = os.path.join(save_dir, f'{row["image_id"]}_{i}.jpg')
+        self.cropped_paths = [
+            os.path.join(save_dir, f'{row["image_id"]}_{i}.jpg')
+            for i, row in df.iterrows()
+        ]
+
+        progress_bar = tqdm(df.iterrows(), total=len(df), desc=f"Preparing {split} data")
+        for i, row in progress_bar:
+            save_path = self.cropped_paths[i]
             if os.path.exists(save_path):
                 continue
-            img = cv2.imread(os.path.join(root, row['path']))
-            h, w = img.shape[:2]
-            ymin, ymax, xmin, xmax = row[['ymin', 'ymax', 'xmin', 'xmax']].values
-            crop_img = img[max(0, int(ymin)):min(h, int(ymax)), max(0, int(xmin)):min(w, int(xmax)), :]
 
-            self.cropped_paths.append(save_path)
+            img_path = os.path.join(root, row['path'])
+            img = cv2.imread(img_path)
+            if img is None: continue
+
+            h_orig, w_orig = img.shape[:2]
+            ymin, ymax, xmin, xmax = row[['ymin', 'ymax', 'xmin', 'xmax']].values
+
+            crop_img = img[
+                max(0, int(ymin)):min(h_orig, int(ymax)),
+                max(0, int(xmin)):min(w_orig, int(xmax))
+            ]
+
             cv2.imwrite(save_path, crop_img)
 
     def __len__(self):
         return len(self.labels)
 
     def __getitem__(self, idx):
-        image = Image.open(self.cropped_paths[idx])
-        label = int(self.labels[idx])
-
+        image = Image.open(self.cropped_paths[idx]).convert('RGB')
+        label = self.labels[idx]
         if self.transforms:
             image = self.transforms(image)
-
         return image, label
 
 
 
-def create_or_get_csv(root, split='train'):
-    path_csv = os.path.join(root, f'{split}_objects.csv')
+def create_or_get_csv(root, root_data, split='train'):
+    path_csv = os.path.join(root_data, f'{split}_objects.csv')
     path_json = os.path.join(root, f'{split}.json')
     if os.path.exists(path_csv):
         return pd.read_csv(path_csv)
