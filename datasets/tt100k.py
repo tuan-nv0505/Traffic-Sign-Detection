@@ -21,7 +21,7 @@ class TT100KClassificationDataset(Dataset):
         os.makedirs(save_dir, exist_ok=True)
 
         df = create_or_get_csv(root, root_dir_save, split).reset_index(drop=True)
-        categories = create_or_get_categories(root)
+        categories = create_or_get_categories(root_dir_save)
         self.labels_dict = {v: int(k) for k, v in categories.items()}
         self.labels = df['category'].map(self.labels_dict).values
 
@@ -63,7 +63,7 @@ class TT100KClassificationDataset(Dataset):
 
 
 def create_or_get_csv(root, root_data, split='train'):
-    path_csv = os.path.join(root_data, f'{split}_objects.csv')
+    path_csv = os.path.join(root_data, f'{split}_classification.csv')
     path_json = os.path.join(root, f'{split}.json')
     if os.path.exists(path_csv):
         return pd.read_csv(path_csv)
