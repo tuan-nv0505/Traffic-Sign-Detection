@@ -51,13 +51,35 @@ def train():
     test_dataloader = DataLoader(test_dataset, batch_size=BATCH_SIZE, shuffle=False, num_workers=WORKERS)
 
     checkpoint = torch.load('best_checkpoint.pth', map_location=DEVICE, weights_only=True)
+    state_dict_raw = checkpoint['state_dict']
+
     keys_to_exclude = ['classifier.classifier.head.weight', 'classifier.classifier.head.bias']
-    state_dict = {k: v for k, v in checkpoint['state_dict'].items() if k not in keys_to_exclude}
+    state_dict = {k: v for k, v in state_dict_raw.items() if k not in keys_to_exclude}
+
     model = MambaClassifier(dims=3, depth=DEEP, num_classes=151).to(DEVICE)
+    model_dict = model.state_dict()
+
+    matched_keys = []
+    mismatched_keys = []
+    missing_keys = []
+
+    for k, v in model_dict.items():
+        if k in state_dict:
+            if v.shape == state_dict[k].shape:
+                matched_keys.append(k)
+            else:
+                mismatched_keys.append(f"{k} (Size: {state_dict[k].shape} -> {v.shape})")
+        else:
+            missing_keys.append(k)
+
     model.load_state_dict(state_dict, strict=False)
-    for name, param in model.named_parameters():
-        if 'backbone' in name:
-            param.requires_grad = False
+
+    print(f"\n" + "=" * 40)
+    print(f"Success: {len(matched_keys)} layers")
+    print(f"Failed: {len(mismatched_keys)} layers")
+    print(f"Blank: {len(missing_keys)} layers")
+    print("=" * 40)
+
 
     optimizer = torch.optim.Adam(model.parameters(), lr=LR)
     criterion = torch.nn.CrossEntropyLoss()
