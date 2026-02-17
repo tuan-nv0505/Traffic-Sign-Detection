@@ -6,11 +6,10 @@ from torch.utils.tensorboard import SummaryWriter
 from torchvision import transforms
 from sklearn.metrics import f1_score
 from tqdm.autonotebook import tqdm
-from typing import Type
 
 from datasets.tt100k import TT100KClassificationDataset
-from datasets.gtsrb import GTSRBDataset
 from models.classification.mamba_classifier import MambaClassifier
+from models.loss import FocalLoss
 from utils.classification import get_args, get_mean_and_std
 
 args = get_args()
@@ -27,7 +26,22 @@ LOAD_CHECKPOINT = args.load_checkpoint
 DEEP = args.deep
 SIZE = args.size
 
-Dataset = GTSRBDataset
+
+Dataset = TT100KClassificationDataset
+
+
+def get_alpha(stats, num_classes=151, beta=0.999):
+    counts = np.array([stats.get(i, 0) for i in range(num_classes)])
+
+    # En = (1 - beta^n) / (1 - beta)
+    effective_num = (1.0 - np.power(beta, counts)) / (1.0 - beta)
+
+    # 1 / En
+    weights = np.where(counts > 0, 1.0 / effective_num, 0)
+
+    weights = weights / np.sum(weights) * num_classes
+
+    return torch.FloatTensor(weights)
 
 def train():
     os.makedirs(TRAINED, exist_ok=True)
@@ -50,11 +64,12 @@ def train():
     test_dataset = Dataset(root=PATH_DATA, transforms=data_transforms, split='test')
     test_dataloader = DataLoader(test_dataset, batch_size=BATCH_SIZE, shuffle=False, num_workers=WORKERS)
 
-    model = MambaClassifier(dims=3, depth=DEEP, num_classes=len(train_dataset.categories)).to(DEVICE)
-    optimizer = torch.optim.Adam(model.parameters(), lr=LR)
-    criterion = torch.nn.CrossEntropyLoss()
-    writer = SummaryWriter(LOGGING)
+    model = MambaClassifier(dims=3, depth=DEEP, num_classes=151).to(DEVICE)
 
+
+    optimizer = torch.optim.Adam(model.parameters(), lr=LR)
+    criterion = FocalLoss(alpha=get_alpha(train_dataset.stats, num_classes=151, beta=0.999), gamma=2.0)
+    writer = SummaryWriter(LOGGING)
     start_epoch = 0
     best_f1_score = 0
 
@@ -90,17 +105,29 @@ def train():
 
         print(f"--> Average Train Loss: {(total_loss_train / len(train_dataloader)):.4f}")
 
-        model.eval()
         list_prediction, list_label = [], []
         total_loss_val = 0.0
 
         with torch.no_grad():
             for images, labels_val in test_dataloader:
-                images, labels_val = images.to(DEVICE), labels_val.to(DEVICE)
-                outputs = model(images)
-                total_loss_val += criterion(outputs, labels_val).item()
+                images = images.to(DEVICE).float()
+                labels_val = labels_val.to(DEVICE).long()
 
-                list_prediction.extend(torch.argmax(outputs, dim=1).cpu().numpy())
+                mask = (labels_val >= 0) & (labels_val < 151)
+                if not mask.all():
+                    bad_labels = labels_val[~mask].tolist()
+                    images = images[mask]
+                    labels_val = labels_val[mask]
+
+                    if len(labels_val) == 0:
+                        continue
+
+                outputs = model(images)
+                loss = criterion(outputs.float(), labels_val)
+                total_loss_val += loss.item()
+
+                preds = torch.argmax(outputs, dim=1)
+                list_prediction.extend(preds.cpu().numpy())
                 list_label.extend(labels_val.cpu().numpy())
 
         f1score = f1_score(list_label, list_prediction, average="macro")

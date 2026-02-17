@@ -25,6 +25,8 @@ class TT100KClassificationDataset(Dataset):
         self.labels_dict = {v: int(k) for k, v in categories.items()}
         self.categories = list(self.labels_dict.values())
         self.labels = df['category'].map(self.labels_dict).values
+        stats = df['category'].value_counts().to_dict()
+        self.stats = dict(sorted({int(self.labels_dict[k]): v for k, v in stats.items()}.items(), key=lambda item: item[0]))
 
         self.cropped_paths = [
             os.path.join(save_dir, f'{row["image_id"]}_{i}.jpg')
@@ -105,4 +107,4 @@ def create_or_get_categories(root):
     return categories
 
 if __name__ == '__main__':
-    TT100KClassificationDataset(root='../data/tt100k', split='test')
+    TT100KClassificationDataset(root='../data/tt100k', split='train')
