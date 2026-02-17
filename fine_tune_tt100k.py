@@ -50,11 +50,11 @@ def train():
     test_dataset = Dataset(root=PATH_DATA, transforms=data_transforms, split='test')
     test_dataloader = DataLoader(test_dataset, batch_size=BATCH_SIZE, shuffle=False, num_workers=WORKERS)
 
-    # checkpoint = torch.load('best_checkpoint.pth', map_location=DEVICE, weights_only=True)
-    # keys_to_exclude = ['classifier.classifier.head.weight', 'classifier.classifier.head.bias']
-    # state_dict = {k: v for k, v in checkpoint['state_dict'].items() if k not in keys_to_exclude}
+    checkpoint = torch.load('best_checkpoint.pth', map_location=DEVICE, weights_only=True)
+    keys_to_exclude = ['classifier.classifier.head.weight', 'classifier.classifier.head.bias']
+    state_dict = {k: v for k, v in checkpoint['state_dict'].items() if k not in keys_to_exclude}
     model = MambaClassifier(dims=3, depth=DEEP, num_classes=151).to(DEVICE)
-    # model.load_state_dict(state_dict, strict=False)
+    model.load_state_dict(state_dict, strict=False)
 
     optimizer = torch.optim.Adam(model.parameters(), lr=LR)
     criterion = torch.nn.CrossEntropyLoss()
@@ -103,12 +103,21 @@ def train():
                 images = images.to(DEVICE).float()
                 labels_val = labels_val.to(DEVICE).long()
 
+                mask = (labels_val >= 0) & (labels_val < 151)
+                if not mask.all():
+                    bad_labels = labels_val[~mask].tolist()
+                    print(f"\n{len(bad_labels)} label error in Test: {set(bad_labels)}")
+                    images = images[mask]
+                    labels_val = labels_val[mask]
+
+                    if len(labels_val) == 0:
+                        continue
+
                 outputs = model(images)
                 loss = criterion(outputs.float(), labels_val)
                 total_loss_val += loss.item()
 
                 preds = torch.argmax(outputs, dim=1)
-
                 list_prediction.extend(preds.cpu().numpy())
                 list_label.extend(labels_val.cpu().numpy())
 
