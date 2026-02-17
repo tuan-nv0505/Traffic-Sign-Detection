@@ -16,4 +16,4 @@ class FocalLoss(nn.Module):
         # FL = (1-pt)^gamma * CE
         focal_loss = ((1 - pt) ** self.gamma) * ce_loss
 
-        return focal_loss.mean()
+        return focal_loss

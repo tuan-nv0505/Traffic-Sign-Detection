@@ -31,15 +31,16 @@ Dataset = TT100KClassificationDataset
 
 
 def get_alpha(stats, num_classes=151, beta=0.999):
-    counts = np.array([stats.get(i, 0) for i in range(num_classes)])
+    counts = np.array([stats.get(i, 0) for i in range(num_classes)], dtype=np.float64)
 
-    # En = (1 - beta^n) / (1 - beta)
     effective_num = (1.0 - np.power(beta, counts)) / (1.0 - beta)
 
-    # 1 / En
-    weights = np.where(counts > 0, 1.0 / effective_num, 0)
+    weights = np.zeros_like(effective_num)
+    mask = effective_num > 0
+    weights[mask] = 1.0 / effective_num[mask]
 
-    weights = weights / np.sum(weights) * num_classes
+    if weights.sum() > 0:
+        weights = weights / np.sum(weights) * num_classes
 
     return torch.FloatTensor(weights)
 
@@ -68,7 +69,7 @@ def train():
 
 
     optimizer = torch.optim.Adam(model.parameters(), lr=LR)
-    criterion = FocalLoss(alpha=get_alpha(train_dataset.stats, num_classes=151, beta=0.999), gamma=2.0)
+    criterion = FocalLoss(alpha=get_alpha(train_dataset.stats, num_classes=151, beta=0.999).to(DEVICE), gamma=2.0)
     writer = SummaryWriter(LOGGING)
     start_epoch = 0
     best_f1_score = 0
