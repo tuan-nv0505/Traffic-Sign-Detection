@@ -23,8 +23,8 @@ class TT100KClassificationDataset(Dataset):
         df = create_or_get_csv(root, root_dir_save, split).reset_index(drop=True)
         categories = create_or_get_categories(root_dir_save)
         self.labels_dict = {v: int(k) for k, v in categories.items()}
+        self.categories = list(self.labels_dict.values())
         self.labels = df['category'].map(self.labels_dict).values
-        print(self.labels_dict.values())
 
         self.cropped_paths = [
             os.path.join(save_dir, f'{row["image_id"]}_{i}.jpg')

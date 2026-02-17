@@ -18,6 +18,25 @@ class MambaClassifier(nn.Module):
         return x
 
 if __name__ == '__main__':
-    x = torch.randn(1, 3, 224, 224)
-    model = MambaClassifier(dims=3, depth=4, num_classes=151)
-    model.load_state_dict(torch.load('../../final_best_checkpoint.pth', map_location='cpu'), strict=False)
+    x = torch.randn(1, 3, 48, 48)
+    model = MambaClassifier(dims=3, depth=4, num_classes=43)
+
+    # 2. Load checkpoint
+    checkpoint = torch.device('cpu')
+    checkpoint = torch.load('../../final_best_checkpoint.pth', map_location=checkpoint)
+
+    # Lấy state_dict từ checkpoint
+    old_state_dict = checkpoint['model_state_dict']
+    new_state_dict = {}
+
+    # 3. Ánh xạ lại tên các layer
+    for k, v in old_state_dict.items():
+        # Nếu key bắt đầu bằng classifier, đổi classifier. -> classifier.classifier.
+        if k.startswith('classifier.'):
+            new_key = k.replace('classifier.', 'classifier.classifier.')
+        # Nếu không, thêm tiền tố backbone. vào trước các phần khác (pre_embd, layers, out_norm...)
+        else:
+            new_key = f'backbone.{k}'
+
+        new_state_dict[new_key] = v
+    model.load_state_dict(new_state_dict)
