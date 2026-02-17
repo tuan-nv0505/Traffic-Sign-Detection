@@ -6,9 +6,8 @@ from torch.utils.tensorboard import SummaryWriter
 from torchvision import transforms
 from sklearn.metrics import f1_score
 from tqdm.autonotebook import tqdm
-from typing import Type
+import torch.nn as nn
 
-from datasets.tt100k import TT100KClassificationDataset
 from datasets.gtsrb import GTSRBDataset
 from models.classification.mamba_classifier import MambaClassifier
 from models.loss import FocalLoss
@@ -68,7 +67,8 @@ def train():
 
     model = MambaClassifier(dims=3, depth=DEEP, num_classes=43).to(DEVICE)
     optimizer = torch.optim.Adam(model.parameters(), lr=LR)
-    criterion = FocalLoss(alpha=get_alpha(train_dataset.stats, num_classes=43, beta=0.999).to(DEVICE), gamma=2.0)
+    # criterion = FocalLoss(alpha=get_alpha(train_dataset.stats, num_classes=43, beta=0.999).to(DEVICE), gamma=2.0)
+    criterion = nn.CrossEntropyLoss()
     writer = SummaryWriter(LOGGING)
 
     start_epoch = 0
