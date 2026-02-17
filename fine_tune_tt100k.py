@@ -109,7 +109,6 @@ def train():
                 mask = (labels_val >= 0) & (labels_val < 151)
                 if not mask.all():
                     bad_labels = labels_val[~mask].tolist()
-                    print(f"\n{len(bad_labels)} label error in Test: {set(bad_labels)}")
                     images = images[mask]
                     labels_val = labels_val[mask]
 
