@@ -27,7 +27,7 @@ LOAD_CHECKPOINT = args.load_checkpoint
 DEEP = args.deep
 SIZE = args.size
 
-Dataset = GTSRBDataset
+Dataset = TT100KClassificationDataset
 
 def train():
     os.makedirs(TRAINED, exist_ok=True)
@@ -50,7 +50,12 @@ def train():
     test_dataset = Dataset(root=PATH_DATA, transforms=data_transforms, split='test')
     test_dataloader = DataLoader(test_dataset, batch_size=BATCH_SIZE, shuffle=False, num_workers=WORKERS)
 
+    checkpoint = torch.load('best_checkpoint.pth', map_location=torch.device('cpu'), weights_only=True)
+    keys_to_exclude = ['classifier.classifier.head.weight', 'classifier.classifier.head.bias']
+    state_dict = {k: v for k, v in checkpoint['state_dict'].items() if k not in keys_to_exclude}
     model = MambaClassifier(dims=3, depth=DEEP, num_classes=len(train_dataset.categories)).to(DEVICE)
+    model.load_state_dict(state_dict, strict=False)
+
     optimizer = torch.optim.Adam(model.parameters(), lr=LR)
     criterion = torch.nn.CrossEntropyLoss()
     writer = SummaryWriter(LOGGING)
