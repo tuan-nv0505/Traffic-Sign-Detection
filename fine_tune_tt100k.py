@@ -55,6 +55,9 @@ def train():
     state_dict = {k: v for k, v in checkpoint['state_dict'].items() if k not in keys_to_exclude}
     model = MambaClassifier(dims=3, depth=DEEP, num_classes=151).to(DEVICE)
     model.load_state_dict(state_dict, strict=False)
+    for name, param in model.named_parameters():
+        if 'backbone' in name:
+            param.requires_grad = False
 
     optimizer = torch.optim.Adam(model.parameters(), lr=LR)
     criterion = torch.nn.CrossEntropyLoss()

@@ -105,4 +105,4 @@ def create_or_get_categories(root):
     return categories
 
 if __name__ == '__main__':
-    TT100KClassificationDataset(root='data/tt100k', split='train')
+    TT100KClassificationDataset(root='../data/tt100k', split='test')
