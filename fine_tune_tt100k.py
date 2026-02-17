@@ -50,7 +50,7 @@ def train():
     test_dataset = Dataset(root=PATH_DATA, transforms=data_transforms, split='test')
     test_dataloader = DataLoader(test_dataset, batch_size=BATCH_SIZE, shuffle=False, num_workers=WORKERS)
 
-    checkpoint = torch.load('best_checkpoint.pth', map_location=torch.device('cpu'), weights_only=True)
+    checkpoint = torch.load('best_checkpoint.pth', map_location=DEVICE, weights_only=True)
     keys_to_exclude = ['classifier.classifier.head.weight', 'classifier.classifier.head.bias']
     state_dict = {k: v for k, v in checkpoint['state_dict'].items() if k not in keys_to_exclude}
     model = MambaClassifier(dims=3, depth=DEEP, num_classes=len(train_dataset.categories)).to(DEVICE)
@@ -95,17 +95,21 @@ def train():
 
         print(f"--> Average Train Loss: {(total_loss_train / len(train_dataloader)):.4f}")
 
-        model.eval()
         list_prediction, list_label = [], []
         total_loss_val = 0.0
 
         with torch.no_grad():
             for images, labels_val in test_dataloader:
-                images, labels_val = images.to(DEVICE), labels_val.to(DEVICE)
-                outputs = model(images)
-                total_loss_val += criterion(outputs, labels_val).item()
+                images = images.to(DEVICE).float()
+                labels_val = labels_val.to(DEVICE).long()
 
-                list_prediction.extend(torch.argmax(outputs, dim=1).cpu().numpy())
+                outputs = model(images)
+                loss = criterion(outputs.float(), labels_val)
+                total_loss_val += loss.item()
+
+                preds = torch.argmax(outputs, dim=1)
+
+                list_prediction.extend(preds.cpu().numpy())
                 list_label.extend(labels_val.cpu().numpy())
 
         f1score = f1_score(list_label, list_prediction, average="macro")
