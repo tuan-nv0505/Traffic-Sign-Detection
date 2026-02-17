@@ -53,7 +53,7 @@ def train():
     checkpoint = torch.load('best_checkpoint.pth', map_location=DEVICE, weights_only=True)
     keys_to_exclude = ['classifier.classifier.head.weight', 'classifier.classifier.head.bias']
     state_dict = {k: v for k, v in checkpoint['state_dict'].items() if k not in keys_to_exclude}
-    model = MambaClassifier(dims=3, depth=DEEP, num_classes=len(train_dataset.categories)).to(DEVICE)
+    model = MambaClassifier(dims=3, depth=DEEP, num_classes=151).to(DEVICE)
     model.load_state_dict(state_dict, strict=False)
 
     optimizer = torch.optim.Adam(model.parameters(), lr=LR)
