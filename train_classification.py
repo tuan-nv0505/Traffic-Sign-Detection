@@ -120,7 +120,7 @@ def train():
             optimizer.zero_grad()
             outputs = model(images)
             list_prediction_train.extend(torch.argmax(outputs, dim=1).cpu().numpy())
-            list_label_train.extend(labels_val.cpu().numpy())
+            list_label_train.extend(labels_batch.numpy())
             loss = criterion(outputs, labels_batch)
             loss.backward()
             optimizer.step()
@@ -142,7 +142,7 @@ def train():
                 total_loss_val += criterion(outputs, labels_val).item()
 
                 list_prediction.extend(torch.argmax(outputs, dim=1).cpu().numpy())
-                list_label.extend(labels_val.cpu().numpy())
+                list_label.extend(labels_val.numpy())
 
         accuracy = accuracy_score(list_label, list_prediction)
         scheduler.step(accuracy)
