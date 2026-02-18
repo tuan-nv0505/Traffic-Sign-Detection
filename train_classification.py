@@ -111,6 +111,7 @@ def train():
     for epoch in range(start_epoch, EPOCHS):
         model.train()
         total_loss_train = 0.0
+        list_prediction_train, list_label_train = [], []
         progress_bar = tqdm(train_dataloader, desc=f"Epoch {epoch + 1}/{EPOCHS}")
 
         for i, (images, labels_batch) in enumerate(progress_bar):
@@ -118,6 +119,8 @@ def train():
 
             optimizer.zero_grad()
             outputs = model(images)
+            list_prediction_train.extend(torch.argmax(outputs, dim=1).cpu().numpy())
+            list_label_train.extend(labels_val.cpu().numpy())
             loss = criterion(outputs, labels_batch)
             loss.backward()
             optimizer.step()
@@ -126,7 +129,7 @@ def train():
             progress_bar.set_postfix({"loss": f"{loss.item():.4f}"})
             writer.add_scalar("Train/Loss", loss.item(), epoch * len(train_dataloader) + i)
 
-        print(f"--> Average Train Loss: {(total_loss_train / len(train_dataloader)):.4f}")
+        print(f"--> Average Train Loss: {(total_loss_train / len(train_dataloader)):.4f} | Accuracy: {accuracy_score(list_label_train, list_prediction_train):.4f}")
 
         model.eval()
         list_prediction, list_label = [], []
