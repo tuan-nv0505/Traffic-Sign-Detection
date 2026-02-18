@@ -87,8 +87,7 @@ def train():
         optimizer,
         mode='max',
         factor=0.1,
-        patience=3,
-        verbose=True
+        patience=3
     )
     # criterion = FocalLoss(alpha=get_alpha(train_dataset.stats, num_classes=43, beta=0.999).to(DEVICE), gamma=2.0)
     criterion = nn.CrossEntropyLoss()
