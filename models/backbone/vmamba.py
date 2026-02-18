@@ -266,13 +266,13 @@ class EFFN(nn.Module):
         self.conv1 = nn.Sequential(
             nn.Conv2d(in_channels=in_channels, out_channels=in_channels * 2, kernel_size=1),
             nn.BatchNorm2d(num_features=in_channels * 2),
-            nn.ReLU()
+            nn.SiLU()
         )
 
         self.conv2 = nn.Sequential(
             nn.Conv2d(in_channels=in_channels * 2, out_channels=in_channels * 2, kernel_size=3, padding=1, groups=in_channels * 2),
             nn.BatchNorm2d(num_features=in_channels * 2),
-            nn.ReLU()
+            nn.SiLU()
         )
 
         self.conv3 = nn.Conv2d(in_channels=in_channels * 2, out_channels=in_channels // 2,kernel_size=1)

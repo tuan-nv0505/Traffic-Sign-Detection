@@ -67,8 +67,8 @@ def train():
 
     model = MambaClassifier(dims=3, depth=DEEP, num_classes=43).to(DEVICE)
     optimizer = torch.optim.Adam(model.parameters(), lr=LR)
-    # criterion = FocalLoss(alpha=get_alpha(train_dataset.stats, num_classes=43, beta=0.999).to(DEVICE), gamma=2.0)
-    criterion = nn.CrossEntropyLoss()
+    criterion = FocalLoss(alpha=get_alpha(train_dataset.stats, num_classes=43, beta=0.999).to(DEVICE), gamma=2.0)
+    # criterion = nn.CrossEntropyLoss()
     writer = SummaryWriter(LOGGING)
 
     start_epoch = 0

@@ -18,7 +18,7 @@ class SE(nn.Module):
         self.avg_pool = nn.AdaptiveAvgPool2d(1)
         self.fc = nn.Sequential(
             nn.Linear(in_features=in_channels, out_features=in_channels // reduction, bias=False),
-            nn.ReLU(),
+            nn.SiLU(),
             nn.Linear(in_features=in_channels // reduction, out_features=in_channels, bias=False),
             nn.Sigmoid()
         )
@@ -36,22 +36,22 @@ class ConvNet(nn.Module):
         self.conv1 = nn.Sequential(
             nn.Conv2d(in_channels=3, out_channels=64, kernel_size=3, padding=1),
             nn.BatchNorm2d(64),
-            nn.ReLU()
+            nn.SiLU()
         )
 
         self.conv2 = nn.Sequential(
             nn.Conv2d(in_channels=64, out_channels=32, kernel_size=1),
             nn.BatchNorm2d(32),
-            nn.ReLU(),
+            nn.SiLU(),
             nn.Conv2d(in_channels=32, out_channels=128, kernel_size=3, padding=1),
             nn.BatchNorm2d(128),
-            nn.ReLU()
+            nn.SiLU()
         )
 
         self.conv3 = nn.Sequential(
             nn.Conv2d(in_channels=128, out_channels=64, kernel_size=1),
             nn.BatchNorm2d(64),
-            nn.ReLU(),
+            nn.SiLU(),
             nn.Conv2d(in_channels=64, out_channels=3, kernel_size=3, padding=1)
         )
 
@@ -63,19 +63,19 @@ class ConvNet(nn.Module):
         self.conv4 = nn.Sequential(
             nn.Conv2d(in_channels=3, out_channels=64, kernel_size=1),
             nn.BatchNorm2d(num_features=64),
-            nn.ReLU(),
+            nn.SiLU(),
             nn.Conv2d(in_channels=64, out_channels=3, kernel_size=3, padding=1)
         )
 
         self.conv5 = nn.Sequential(
             nn.Conv2d(in_channels=3, out_channels=3, kernel_size=1),
-            nn.ReLU(),
+            nn.SiLU(),
         )
 
         self.conv6 = nn.Sequential(
             nn.Conv2d(in_channels=3, out_channels=64, kernel_size=1),
             nn.BatchNorm2d(num_features=64),
-            nn.ReLU(),
+            nn.SiLU(),
             nn.Conv2d(in_channels=64, out_channels=3, kernel_size=5, padding=2)
         )
 
