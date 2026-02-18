@@ -53,16 +53,27 @@ def train():
     ]))
     mean, std = get_mean_and_std(temp_ds, workers=WORKERS)
 
-    data_transforms = transforms.Compose([
-        transforms.Resize(SIZE),
+    transforms_train = transforms.Compose([
         transforms.ToTensor(),
+        transforms.ColorJitter(
+            brightness=0.2,
+            contrast=0.2,
+            saturation=0.1
+        ),
+        transforms.Resize(SIZE),
         transforms.Normalize(mean=mean, std=std)
     ])
 
-    train_dataset = Dataset(root=PATH_DATA, transforms=data_transforms, split='train')
+    transforms_test = transforms.Compose([
+        transforms.ToTensor(),
+        transforms.Resize(SIZE),
+        transforms.Normalize(mean=mean, std=std)
+    ])
+
+    train_dataset = Dataset(root=PATH_DATA, transforms=transforms_train, split='train')
     train_dataloader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=WORKERS)
 
-    test_dataset = Dataset(root=PATH_DATA, transforms=data_transforms, split='test')
+    test_dataset = Dataset(root=PATH_DATA, transforms=transforms_test, split='test')
     test_dataloader = DataLoader(test_dataset, batch_size=BATCH_SIZE, shuffle=False, num_workers=WORKERS)
 
     model = MambaClassifier(dims=3, depth=DEEP, num_classes=43).to(DEVICE)
