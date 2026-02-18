@@ -62,8 +62,8 @@ def train():
         ),
         transforms.RandomAffine(
             degrees=10,
-            translate=(0.1, 0.1),
-            scale=(0.9, 1.1)
+            translate=(0.15, 0.15),
+            scale=(0.8, 1.2)
         ),
         transforms.ToTensor(),
         transforms.Normalize(mean=mean, std=std)
@@ -89,6 +89,7 @@ def train():
         factor=0.1,
         patience=3
     )
+
     # criterion = FocalLoss(alpha=get_alpha(train_dataset.stats, num_classes=43, beta=0.999).to(DEVICE), gamma=2.0)
     criterion = nn.CrossEntropyLoss()
     writer = SummaryWriter(LOGGING)
@@ -102,6 +103,7 @@ def train():
             checkpoint = torch.load(checkpoint_path, map_location=DEVICE)
             model.load_state_dict(checkpoint["state_dict"])
             optimizer.load_state_dict(checkpoint["optimizer"])
+            scheduler.load_state_dict(checkpoint["scheduler"])
             start_epoch = checkpoint["epoch"]
             best_accuracy = checkpoint.get("best_accuracy", 0)
             print(f"Resuming from epoch {start_epoch + 1}")
@@ -160,6 +162,7 @@ def train():
             "state_dict": model.state_dict(),
             "epoch": epoch + 1,
             "optimizer": optimizer.state_dict(),
+            'scheduler': scheduler.state_dict(),
             "best_accuracy": best_accuracy,
         }
 
