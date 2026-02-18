@@ -21,7 +21,7 @@ class BackBone(nn.Module):
                 out_dim=self.dims[i_layer + 1],
                 norm_layer=nn.LayerNorm,
             )
-            vss_block = VSSBlock(hidden_dim=self.dims[i_layer + 1])
+            vss_block = VSSBlock(hidden_dim=self.dims[i_layer + 1], drop_path=0.1)
             self.layers.append(downsample)
             self.layers.append(vss_block)
 
