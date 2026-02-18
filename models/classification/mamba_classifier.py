@@ -19,12 +19,5 @@ class MambaClassifier(nn.Module):
 
 if __name__ == '__main__':
     x = torch.randn(1, 3, 48, 48)
-    checkpoint = torch.load('../../best_checkpoint.pth', map_location=torch.device('cpu'))
-    keys_to_exclude = ['classifier.classifier.head.weight', 'classifier.classifier.head.bias']
-    state_dict = {k: v for k, v in checkpoint['state_dict'].items() if k not in keys_to_exclude}
-    model = MambaClassifier(dims=3, depth=4, num_classes=151)
-    model.load_state_dict(state_dict, strict=False)
-    for name, param in model.named_parameters():
-        if 'backbone' in name:
-            param.requires_grad = False
-        print(name, param.requires_grad)
+    model = MambaClassifier(dims=3, depth=4, num_classes=43)
+    summary(model, input_size=(1, 3, 48, 48))

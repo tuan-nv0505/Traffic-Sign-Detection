@@ -352,23 +352,23 @@ class VSSBlock(nn.Module):
         )
         self.drop_path = DropPath(drop_path)
 
-        self.mlp_branch = mlp_ratio > 0
-        if self.mlp_branch:
-            self.norm2 = norm_layer(hidden_dim)
-            mlp_hidden_dim = int(hidden_dim * mlp_ratio)
-            self.mlp = Mlp(
-                in_features=hidden_dim,
-                hidden_features=mlp_hidden_dim,
-                act_layer=mlp_act_layer,
-                drop=mlp_drop_rate,
-                channels_first=False
-            )
+        # self.mlp_branch = mlp_ratio > 0
+        # if self.mlp_branch:
+        #     self.norm2 = norm_layer(hidden_dim)
+        #     mlp_hidden_dim = int(hidden_dim * mlp_ratio)
+        #     self.mlp = Mlp(
+        #         in_features=hidden_dim,
+        #         hidden_features=mlp_hidden_dim,
+        #         act_layer=mlp_act_layer,
+        #         drop=mlp_drop_rate,
+        #         channels_first=False
+        #     )
 
 
     def forward(self, input: torch.Tensor):
         x = self.norm(input.permute(0, 2, 3, 1)).permute(0, 3, 1, 2)
         x = input + self.drop_path(self.ss2d(x))
-        if self.mlp_branch:
-            x = self.norm2(x.permute(0, 2, 3, 1)).permute(0, 3, 1, 2)
-            x = x + self.drop_path(self.mlp(x))
+        # if self.mlp_branch:
+        #     x = self.norm2(x.permute(0, 2, 3, 1)).permute(0, 3, 1, 2)
+        #     x = x + self.drop_path(self.mlp(x))
         return x
