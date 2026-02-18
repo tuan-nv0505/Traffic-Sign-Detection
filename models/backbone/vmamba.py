@@ -283,7 +283,7 @@ class EFFN(nn.Module):
         x = self.conv1(x)
         x = self.conv2(x)
         x = self.conv3(x)
-        x = self.se(x)
+        x = x + self.se(x)
         return x
 
 class Mlp(nn.Module):
