@@ -61,7 +61,7 @@ def train():
             saturation=0.1
         ),
         transforms.RandomAffine(
-            degrees=5,
+            degrees=10,
             translate=(0.1, 0.1),
             scale=(0.9, 1.1)
         ),
@@ -83,6 +83,13 @@ def train():
 
     model = MambaClassifier(dims=3, depth=DEEP, num_classes=43).to(DEVICE)
     optimizer = torch.optim.Adam(model.parameters(), lr=LR)
+    scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
+        optimizer,
+        mode='max',
+        factor=0.1,
+        patience=3,
+        verbose=True
+    )
     # criterion = FocalLoss(alpha=get_alpha(train_dataset.stats, num_classes=43, beta=0.999).to(DEVICE), gamma=2.0)
     criterion = nn.CrossEntropyLoss()
     writer = SummaryWriter(LOGGING)
@@ -136,6 +143,7 @@ def train():
                 list_label.extend(labels_val.cpu().numpy())
 
         accuracy = accuracy_score(list_label, list_prediction)
+        scheduler.step(accuracy)
         avg_val_loss = total_loss_val / len(test_dataloader)
 
         print(f"Val Loss: {avg_val_loss:.4f} | Accuracy: {accuracy:.4f}")
