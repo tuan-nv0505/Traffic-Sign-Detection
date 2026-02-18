@@ -1,0 +1,318 @@
+Epoch 1/70: 100%|████████████████| 417/417 [01:00<00:00,  6.90it/s, loss=3.1484]
+--> Average Train Loss: 3.4221 | Accuracy: 0.1159
+Val Loss: 3.1921 | Accuracy: 0.1426
+--> [NEW BEST] Accuracy score improved to 0.1426
+
+Epoch 2/70: 100%|████████████████| 417/417 [00:53<00:00,  7.86it/s, loss=2.9390]
+--> Average Train Loss: 3.0405 | Accuracy: 0.1719
+Val Loss: 2.8934 | Accuracy: 0.1893
+--> [NEW BEST] Accuracy score improved to 0.1893
+
+Epoch 3/70: 100%|████████████████| 417/417 [00:52<00:00,  7.87it/s, loss=2.8369]
+--> Average Train Loss: 2.7131 | Accuracy: 0.2309
+Val Loss: 2.4610 | Accuracy: 0.2587
+--> [NEW BEST] Accuracy score improved to 0.2587
+
+Epoch 4/70: 100%|████████████████| 417/417 [00:52<00:00,  7.88it/s, loss=2.4787]
+--> Average Train Loss: 2.3875 | Accuracy: 0.3047
+Val Loss: 2.1807 | Accuracy: 0.3282
+--> [NEW BEST] Accuracy score improved to 0.3282
+
+Epoch 5/70: 100%|████████████████| 417/417 [00:53<00:00,  7.86it/s, loss=1.9910]
+--> Average Train Loss: 2.1471 | Accuracy: 0.3478
+Val Loss: 1.9367 | Accuracy: 0.3710
+--> [NEW BEST] Accuracy score improved to 0.3710
+
+Epoch 6/70: 100%|████████████████| 417/417 [00:53<00:00,  7.85it/s, loss=1.8505]
+--> Average Train Loss: 1.9898 | Accuracy: 0.3860
+Val Loss: 1.8371 | Accuracy: 0.3916
+--> [NEW BEST] Accuracy score improved to 0.3916
+
+Epoch 7/70: 100%|████████████████| 417/417 [00:52<00:00,  7.87it/s, loss=1.9100]
+--> Average Train Loss: 1.8925 | Accuracy: 0.4084
+Val Loss: 1.7193 | Accuracy: 0.4466
+--> [NEW BEST] Accuracy score improved to 0.4466
+
+Epoch 8/70: 100%|████████████████| 417/417 [00:52<00:00,  7.89it/s, loss=1.9908]
+--> Average Train Loss: 1.7995 | Accuracy: 0.4375
+Val Loss: 1.6637 | Accuracy: 0.4630
+--> [NEW BEST] Accuracy score improved to 0.4630
+
+Epoch 9/70: 100%|████████████████| 417/417 [00:53<00:00,  7.85it/s, loss=2.6367]
+--> Average Train Loss: 1.7005 | Accuracy: 0.4708
+Val Loss: 1.5162 | Accuracy: 0.5154
+--> [NEW BEST] Accuracy score improved to 0.5154
+
+Epoch 10/70: 100%|███████████████| 417/417 [00:52<00:00,  7.88it/s, loss=1.3787]
+--> Average Train Loss: 1.6153 | Accuracy: 0.4983
+Val Loss: 1.4400 | Accuracy: 0.5297
+--> [NEW BEST] Accuracy score improved to 0.5297
+
+Epoch 11/70: 100%|███████████████| 417/417 [00:52<00:00,  7.90it/s, loss=1.5332]
+--> Average Train Loss: 1.5285 | Accuracy: 0.5252
+Val Loss: 1.3416 | Accuracy: 0.5675
+--> [NEW BEST] Accuracy score improved to 0.5675
+
+Epoch 12/70: 100%|███████████████| 417/417 [00:52<00:00,  7.90it/s, loss=1.4094]
+--> Average Train Loss: 1.4341 | Accuracy: 0.5596
+Val Loss: 1.2516 | Accuracy: 0.6016
+--> [NEW BEST] Accuracy score improved to 0.6016
+
+Epoch 13/70: 100%|███████████████| 417/417 [00:52<00:00,  7.89it/s, loss=1.4846]
+--> Average Train Loss: 1.3332 | Accuracy: 0.5970
+Val Loss: 1.1024 | Accuracy: 0.6573
+--> [NEW BEST] Accuracy score improved to 0.6573
+
+Epoch 14/70: 100%|███████████████| 417/417 [00:52<00:00,  7.88it/s, loss=1.7450]
+--> Average Train Loss: 1.2433 | Accuracy: 0.6349
+Val Loss: 1.0632 | Accuracy: 0.6651
+--> [NEW BEST] Accuracy score improved to 0.6651
+
+Epoch 15/70: 100%|███████████████| 417/417 [00:53<00:00,  7.85it/s, loss=1.6370]
+--> Average Train Loss: 1.1349 | Accuracy: 0.6649
+Val Loss: 0.9931 | Accuracy: 0.6889
+--> [NEW BEST] Accuracy score improved to 0.6889
+
+Epoch 16/70: 100%|███████████████| 417/417 [00:53<00:00,  7.85it/s, loss=1.0302]
+--> Average Train Loss: 1.0509 | Accuracy: 0.6894
+Val Loss: 0.8798 | Accuracy: 0.7298
+--> [NEW BEST] Accuracy score improved to 0.7298
+
+Epoch 17/70: 100%|███████████████| 417/417 [00:53<00:00,  7.86it/s, loss=1.2215]
+--> Average Train Loss: 0.9819 | Accuracy: 0.7125
+Val Loss: 0.8294 | Accuracy: 0.7371
+--> [NEW BEST] Accuracy score improved to 0.7371
+
+Epoch 18/70: 100%|███████████████| 417/417 [00:53<00:00,  7.85it/s, loss=0.5067]
+--> Average Train Loss: 0.9118 | Accuracy: 0.7334
+Val Loss: 0.7551 | Accuracy: 0.7664
+--> [NEW BEST] Accuracy score improved to 0.7664
+
+Epoch 19/70: 100%|███████████████| 417/417 [00:53<00:00,  7.83it/s, loss=1.0477]
+--> Average Train Loss: 0.8537 | Accuracy: 0.7503
+Val Loss: 0.6796 | Accuracy: 0.7983
+--> [NEW BEST] Accuracy score improved to 0.7983
+
+Epoch 20/70: 100%|███████████████| 417/417 [00:53<00:00,  7.82it/s, loss=0.5581]
+--> Average Train Loss: 0.7808 | Accuracy: 0.7765
+Val Loss: 0.6899 | Accuracy: 0.7939
+
+Epoch 21/70: 100%|███████████████| 417/417 [00:53<00:00,  7.86it/s, loss=0.6999]
+--> Average Train Loss: 0.7227 | Accuracy: 0.7942
+Val Loss: 0.5622 | Accuracy: 0.8277
+--> [NEW BEST] Accuracy score improved to 0.8277
+
+Epoch 22/70: 100%|███████████████| 417/417 [00:52<00:00,  7.87it/s, loss=0.8485]
+--> Average Train Loss: 0.6663 | Accuracy: 0.8122
+Val Loss: 0.5308 | Accuracy: 0.8435
+--> [NEW BEST] Accuracy score improved to 0.8435
+
+Epoch 23/70: 100%|███████████████| 417/417 [00:53<00:00,  7.85it/s, loss=0.9253]
+--> Average Train Loss: 0.6321 | Accuracy: 0.8210
+Val Loss: 0.5121 | Accuracy: 0.8483
+--> [NEW BEST] Accuracy score improved to 0.8483
+
+Epoch 24/70: 100%|███████████████| 417/417 [00:52<00:00,  7.87it/s, loss=0.6197]
+--> Average Train Loss: 0.6005 | Accuracy: 0.8290
+Val Loss: 0.4547 | Accuracy: 0.8721
+--> [NEW BEST] Accuracy score improved to 0.8721
+
+Epoch 25/70: 100%|███████████████| 417/417 [00:53<00:00,  7.85it/s, loss=0.5812]
+--> Average Train Loss: 0.5411 | Accuracy: 0.8456
+Val Loss: 0.4539 | Accuracy: 0.8702
+
+Epoch 26/70: 100%|███████████████| 417/417 [00:53<00:00,  7.85it/s, loss=1.0329]
+--> Average Train Loss: 0.5135 | Accuracy: 0.8548
+Val Loss: 0.4900 | Accuracy: 0.8544
+
+Epoch 27/70: 100%|███████████████| 417/417 [00:53<00:00,  7.84it/s, loss=0.6589]
+--> Average Train Loss: 0.4812 | Accuracy: 0.8613
+Val Loss: 0.4159 | Accuracy: 0.8793
+--> [NEW BEST] Accuracy score improved to 0.8793
+
+Epoch 28/70: 100%|███████████████| 417/417 [00:52<00:00,  7.88it/s, loss=0.4016]
+--> Average Train Loss: 0.4564 | Accuracy: 0.8672
+Val Loss: 0.3916 | Accuracy: 0.8917
+--> [NEW BEST] Accuracy score improved to 0.8917
+
+Epoch 29/70: 100%|███████████████| 417/417 [00:53<00:00,  7.86it/s, loss=0.8157]
+--> Average Train Loss: 0.4271 | Accuracy: 0.8756
+Val Loss: 0.3896 | Accuracy: 0.8869
+
+Epoch 30/70: 100%|███████████████| 417/417 [00:53<00:00,  7.83it/s, loss=0.6566]
+--> Average Train Loss: 0.4007 | Accuracy: 0.8857
+Val Loss: 0.3509 | Accuracy: 0.9026
+--> [NEW BEST] Accuracy score improved to 0.9026
+
+Epoch 31/70: 100%|███████████████| 417/417 [00:53<00:00,  7.85it/s, loss=0.1979]
+--> Average Train Loss: 0.3815 | Accuracy: 0.8896
+Val Loss: 0.3121 | Accuracy: 0.9154
+--> [NEW BEST] Accuracy score improved to 0.9154
+
+Epoch 32/70: 100%|███████████████| 417/417 [00:53<00:00,  7.84it/s, loss=1.1053]
+--> Average Train Loss: 0.3577 | Accuracy: 0.8973
+Val Loss: 0.3170 | Accuracy: 0.9120
+
+Epoch 33/70: 100%|███████████████| 417/417 [00:52<00:00,  7.88it/s, loss=0.3213]
+--> Average Train Loss: 0.3337 | Accuracy: 0.9028
+Val Loss: 0.3150 | Accuracy: 0.9155
+--> [NEW BEST] Accuracy score improved to 0.9155
+
+Epoch 34/70: 100%|███████████████| 417/417 [00:53<00:00,  7.86it/s, loss=0.3476]
+--> Average Train Loss: 0.3184 | Accuracy: 0.9074
+Val Loss: 0.3439 | Accuracy: 0.9100
+
+Epoch 35/70: 100%|███████████████| 417/417 [00:53<00:00,  7.86it/s, loss=0.2697]
+--> Average Train Loss: 0.3087 | Accuracy: 0.9092
+Val Loss: 0.3489 | Accuracy: 0.9130
+
+Epoch 36/70: 100%|███████████████| 417/417 [00:53<00:00,  7.83it/s, loss=0.5193]
+--> Average Train Loss: 0.2611 | Accuracy: 0.9241
+Val Loss: 0.2569 | Accuracy: 0.9341
+--> [NEW BEST] Accuracy score improved to 0.9341
+
+Epoch 37/70: 100%|███████████████| 417/417 [00:53<00:00,  7.84it/s, loss=0.3328]
+--> Average Train Loss: 0.2554 | Accuracy: 0.9249
+Val Loss: 0.2552 | Accuracy: 0.9352
+--> [NEW BEST] Accuracy score improved to 0.9352
+
+Epoch 38/70: 100%|███████████████| 417/417 [00:53<00:00,  7.82it/s, loss=0.3356]
+--> Average Train Loss: 0.2466 | Accuracy: 0.9273
+Val Loss: 0.2468 | Accuracy: 0.9366
+--> [NEW BEST] Accuracy score improved to 0.9366
+
+Epoch 39/70: 100%|███████████████| 417/417 [00:53<00:00,  7.82it/s, loss=0.4095]
+--> Average Train Loss: 0.2357 | Accuracy: 0.9316
+Val Loss: 0.2492 | Accuracy: 0.9346
+
+Epoch 40/70: 100%|███████████████| 417/417 [00:53<00:00,  7.83it/s, loss=0.1585]
+--> Average Train Loss: 0.2335 | Accuracy: 0.9317
+Val Loss: 0.2503 | Accuracy: 0.9356
+
+Epoch 41/70: 100%|███████████████| 417/417 [00:53<00:00,  7.85it/s, loss=0.4128]
+--> Average Train Loss: 0.2384 | Accuracy: 0.9297
+Val Loss: 0.2418 | Accuracy: 0.9383
+--> [NEW BEST] Accuracy score improved to 0.9383
+
+Epoch 42/70: 100%|███████████████| 417/417 [00:53<00:00,  7.82it/s, loss=0.3785]
+--> Average Train Loss: 0.2327 | Accuracy: 0.9304
+Val Loss: 0.2505 | Accuracy: 0.9344
+
+Epoch 43/70: 100%|███████████████| 417/417 [00:53<00:00,  7.80it/s, loss=0.1201]
+--> Average Train Loss: 0.2331 | Accuracy: 0.9313
+Val Loss: 0.2433 | Accuracy: 0.9359
+
+Epoch 44/70: 100%|███████████████| 417/417 [00:53<00:00,  7.82it/s, loss=0.1524]
+--> Average Train Loss: 0.2375 | Accuracy: 0.9303
+Val Loss: 0.2455 | Accuracy: 0.9374
+
+Epoch 45/70: 100%|███████████████| 417/417 [00:53<00:00,  7.84it/s, loss=0.0878]
+--> Average Train Loss: 0.2266 | Accuracy: 0.9337
+Val Loss: 0.2368 | Accuracy: 0.9378
+
+Epoch 46/70: 100%|███████████████| 417/417 [00:53<00:00,  7.83it/s, loss=0.4175]
+--> Average Train Loss: 0.2318 | Accuracy: 0.9321
+Val Loss: 0.2494 | Accuracy: 0.9355
+
+Epoch 47/70: 100%|███████████████| 417/417 [00:53<00:00,  7.79it/s, loss=0.3186]
+--> Average Train Loss: 0.2214 | Accuracy: 0.9338
+Val Loss: 0.2411 | Accuracy: 0.9378
+
+Epoch 48/70: 100%|███████████████| 417/417 [00:53<00:00,  7.83it/s, loss=0.6108]
+--> Average Train Loss: 0.2176 | Accuracy: 0.9356
+Val Loss: 0.2394 | Accuracy: 0.9390
+--> [NEW BEST] Accuracy score improved to 0.9390
+
+Epoch 49/70: 100%|███████████████| 417/417 [00:53<00:00,  7.83it/s, loss=0.1324]
+--> Average Train Loss: 0.2249 | Accuracy: 0.9336
+Val Loss: 0.2393 | Accuracy: 0.9386
+
+Epoch 50/70: 100%|███████████████| 417/417 [00:52<00:00,  7.87it/s, loss=0.3824]
+--> Average Train Loss: 0.2197 | Accuracy: 0.9348
+Val Loss: 0.2357 | Accuracy: 0.9395
+--> [NEW BEST] Accuracy score improved to 0.9395
+
+Epoch 51/70: 100%|███████████████| 417/417 [00:53<00:00,  7.85it/s, loss=0.0989]
+--> Average Train Loss: 0.2182 | Accuracy: 0.9349
+Val Loss: 0.2421 | Accuracy: 0.9398
+--> [NEW BEST] Accuracy score improved to 0.9398
+
+Epoch 52/70: 100%|███████████████| 417/417 [00:53<00:00,  7.81it/s, loss=0.1673]
+--> Average Train Loss: 0.2215 | Accuracy: 0.9336
+Val Loss: 0.2371 | Accuracy: 0.9379
+
+Epoch 53/70: 100%|███████████████| 417/417 [00:53<00:00,  7.81it/s, loss=0.0935]
+--> Average Train Loss: 0.2204 | Accuracy: 0.9346
+Val Loss: 0.2366 | Accuracy: 0.9387
+
+Epoch 54/70: 100%|███████████████| 417/417 [00:53<00:00,  7.85it/s, loss=0.3599]
+--> Average Train Loss: 0.2161 | Accuracy: 0.9361
+Val Loss: 0.2318 | Accuracy: 0.9378
+
+Epoch 55/70: 100%|███████████████| 417/417 [00:53<00:00,  7.84it/s, loss=0.6886]
+--> Average Train Loss: 0.2272 | Accuracy: 0.9331
+Val Loss: 0.2387 | Accuracy: 0.9398
+
+Epoch 56/70: 100%|███████████████| 417/417 [00:53<00:00,  7.81it/s, loss=0.1836]
+--> Average Train Loss: 0.2224 | Accuracy: 0.9338
+Val Loss: 0.2392 | Accuracy: 0.9383
+
+Epoch 57/70: 100%|███████████████| 417/417 [00:53<00:00,  7.82it/s, loss=0.4986]
+--> Average Train Loss: 0.2294 | Accuracy: 0.9312
+Val Loss: 0.2371 | Accuracy: 0.9385
+
+Epoch 58/70: 100%|███████████████| 417/417 [00:53<00:00,  7.84it/s, loss=0.3496]
+--> Average Train Loss: 0.2225 | Accuracy: 0.9352
+Val Loss: 0.2380 | Accuracy: 0.9392
+
+Epoch 59/70: 100%|███████████████| 417/417 [00:53<00:00,  7.87it/s, loss=0.3501]
+--> Average Train Loss: 0.2202 | Accuracy: 0.9349
+Val Loss: 0.2392 | Accuracy: 0.9379
+
+Epoch 60/70: 100%|███████████████| 417/417 [00:53<00:00,  7.85it/s, loss=0.7313]
+--> Average Train Loss: 0.2234 | Accuracy: 0.9342
+Val Loss: 0.2329 | Accuracy: 0.9405
+--> [NEW BEST] Accuracy score improved to 0.9405
+
+Epoch 61/70: 100%|███████████████| 417/417 [00:53<00:00,  7.83it/s, loss=0.2319]
+--> Average Train Loss: 0.2198 | Accuracy: 0.9351
+Val Loss: 0.2340 | Accuracy: 0.9407
+--> [NEW BEST] Accuracy score improved to 0.9407
+
+Epoch 62/70: 100%|███████████████| 417/417 [00:53<00:00,  7.85it/s, loss=0.2474]
+--> Average Train Loss: 0.2211 | Accuracy: 0.9334
+Val Loss: 0.2371 | Accuracy: 0.9394
+
+Epoch 63/70: 100%|███████████████| 417/417 [00:53<00:00,  7.82it/s, loss=0.1364]
+--> Average Train Loss: 0.2156 | Accuracy: 0.9358
+Val Loss: 0.2290 | Accuracy: 0.9405
+
+Epoch 64/70: 100%|███████████████| 417/417 [00:53<00:00,  7.80it/s, loss=0.6336]
+--> Average Train Loss: 0.2262 | Accuracy: 0.9318
+Val Loss: 0.2434 | Accuracy: 0.9382
+
+Epoch 65/70: 100%|███████████████| 417/417 [00:53<00:00,  7.85it/s, loss=0.2192]
+--> Average Train Loss: 0.2316 | Accuracy: 0.9332
+Val Loss: 0.2326 | Accuracy: 0.9401
+
+Epoch 66/70: 100%|███████████████| 417/417 [00:53<00:00,  7.84it/s, loss=0.6071]
+--> Average Train Loss: 0.2189 | Accuracy: 0.9369
+Val Loss: 0.2366 | Accuracy: 0.9383
+
+Epoch 67/70: 100%|███████████████| 417/417 [00:53<00:00,  7.84it/s, loss=0.2768]
+--> Average Train Loss: 0.2196 | Accuracy: 0.9342
+Val Loss: 0.2354 | Accuracy: 0.9402
+
+Epoch 68/70: 100%|███████████████| 417/417 [00:53<00:00,  7.80it/s, loss=0.3593]
+--> Average Train Loss: 0.2203 | Accuracy: 0.9352
+Val Loss: 0.2331 | Accuracy: 0.9395
+
+Epoch 69/70: 100%|███████████████| 417/417 [00:53<00:00,  7.85it/s, loss=0.1457]
+--> Average Train Loss: 0.2236 | Accuracy: 0.9336
+Val Loss: 0.2419 | Accuracy: 0.9373
+
+Epoch 70/70: 100%|███████████████| 417/417 [00:53<00:00,  7.84it/s, loss=0.0389]
+--> Average Train Loss: 0.2205 | Accuracy: 0.9343
+Val Loss: 0.2320 | Accuracy: 0.9395
+
+Training finished!
