@@ -4,7 +4,7 @@ import numpy as np
 from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
 from torchvision import transforms
-from sklearn.metrics import f1_score
+from sklearn.metrics import f1_score, accuracy_score
 from tqdm.autonotebook import tqdm
 import torch.nn as nn
 
@@ -131,9 +131,10 @@ def train():
                 list_label.extend(labels_val.cpu().numpy())
 
         f1score = f1_score(list_label, list_prediction, average="macro")
+        accuracy = accuracy_score(list_label, list_prediction)
         avg_val_loss = total_loss_val / len(test_dataloader)
 
-        print(f"Val Loss: {avg_val_loss:.4f} | F1 score: {f1score:.4f}")
+        print(f"Val Loss: {avg_val_loss:.4f} | F1 score: {f1score:.4f} | Accuracy: {accuracy:.4f}")
         writer.add_scalar("Val/Loss", avg_val_loss, epoch)
         writer.add_scalar("Val/F1", f1score, epoch)
 
