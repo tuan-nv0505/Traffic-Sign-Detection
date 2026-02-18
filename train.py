@@ -61,7 +61,7 @@ def train():
             saturation=0.1
         ),
         transforms.RandomAffine(
-            degrees=10,
+            degrees=5,
             translate=(0.1, 0.1),
             scale=(0.9, 1.1)
         ),
