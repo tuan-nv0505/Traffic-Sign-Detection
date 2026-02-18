@@ -54,19 +54,24 @@ def train():
     mean, std = get_mean_and_std(temp_ds, workers=WORKERS)
 
     transforms_train = transforms.Compose([
-        transforms.ToTensor(),
+        transforms.Resize(SIZE),
         transforms.ColorJitter(
             brightness=0.2,
             contrast=0.2,
             saturation=0.1
         ),
-        transforms.Resize(SIZE),
+        transforms.RandomAffine(
+            degrees=10,
+            translate=(0.1, 0.1),
+            scale=(0.9, 1.1)
+        ),
+        transforms.ToTensor(),
         transforms.Normalize(mean=mean, std=std)
     ])
 
     transforms_test = transforms.Compose([
-        transforms.ToTensor(),
         transforms.Resize(SIZE),
+        transforms.ToTensor(),
         transforms.Normalize(mean=mean, std=std)
     ])
 
@@ -83,7 +88,7 @@ def train():
     writer = SummaryWriter(LOGGING)
 
     start_epoch = 0
-    best_f1_score = 0
+    best_accuracy = 0
 
     checkpoint_path = os.path.join(TRAINED, 'checkpoint.pth')
     if LOAD_CHECKPOINT and os.path.exists(checkpoint_path):
@@ -92,7 +97,7 @@ def train():
             model.load_state_dict(checkpoint["state_dict"])
             optimizer.load_state_dict(checkpoint["optimizer"])
             start_epoch = checkpoint["epoch"]
-            best_f1_score = checkpoint.get("best_f1_score", 0)
+            best_accuracy = checkpoint.get("best_accuracy", 0)
             print(f"Resuming from epoch {start_epoch + 1}")
         except Exception as ex:
             print(f"Load checkpoint failed: {ex}")
@@ -130,29 +135,28 @@ def train():
                 list_prediction.extend(torch.argmax(outputs, dim=1).cpu().numpy())
                 list_label.extend(labels_val.cpu().numpy())
 
-        f1score = f1_score(list_label, list_prediction, average="macro")
         accuracy = accuracy_score(list_label, list_prediction)
         avg_val_loss = total_loss_val / len(test_dataloader)
 
-        print(f"Val Loss: {avg_val_loss:.4f} | F1 score: {f1score:.4f} | Accuracy: {accuracy:.4f}")
+        print(f"Val Loss: {avg_val_loss:.4f} | Accuracy: {accuracy:.4f}")
         writer.add_scalar("Val/Loss", avg_val_loss, epoch)
-        writer.add_scalar("Val/F1", f1score, epoch)
+        writer.add_scalar("Val/Accuracy", accuracy, epoch)
 
-        is_best = f1score > best_f1_score
+        is_best = accuracy > best_accuracy
         if is_best:
-            best_f1_score = f1score
+            best_accuracy = accuracy
 
         checkpoint_data = {
             "state_dict": model.state_dict(),
             "epoch": epoch + 1,
             "optimizer": optimizer.state_dict(),
-            "best_f1_score": best_f1_score,
+            "best_accuracy": best_accuracy,
         }
 
         torch.save(checkpoint_data, checkpoint_path)
         if is_best:
             torch.save(checkpoint_data, os.path.join(TRAINED, 'best_checkpoint.pth'))
-            print(f"--> [NEW BEST] F1 score improved to {best_f1_score:.4f}\n")
+            print(f"--> [NEW BEST] Accuracy score improved to {best_accuracy:.4f}\n")
         else:
             print()
 
