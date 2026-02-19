@@ -68,7 +68,7 @@ def test():
     progress_bar = tqdm(test_dataloader)
     with torch.no_grad():
         for img, label in progress_bar:
-            img, label = img.to(DEVICE), label.to(DEVICE)
+            img, label = img.to(DEVICE), label.cpu().numpy()
             list_label.extend(label)
             prediction = torch.argmax(model(img), dim=1).cpu().numpy()
             list_prediction.extend(prediction)
