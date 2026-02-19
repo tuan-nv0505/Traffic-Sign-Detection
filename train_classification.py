@@ -1,6 +1,8 @@
 import os
 import torch
 import numpy as np
+from torch.optim import Adam
+from torch.optim.lr_scheduler import ReduceLROnPlateau, CosineAnnealingLR
 from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
 from torchvision import transforms
@@ -82,12 +84,18 @@ def train():
     test_dataloader = DataLoader(test_dataset, batch_size=BATCH_SIZE, shuffle=False, num_workers=WORKERS)
 
     model = MambaClassifier(dims=3, depth=DEEP, num_classes=43).to(DEVICE)
-    optimizer = torch.optim.Adam(model.parameters(), lr=LR)
-    scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
+    optimizer = Adam(model.parameters(), lr=LR)
+    # scheduler = ReduceLROnPlateau(
+    #     optimizer,
+    #     mode='max',
+    #     factor=0.1,
+    #     patience=3
+    # )
+
+    scheduler = CosineAnnealingLR(
         optimizer,
-        mode='max',
-        factor=0.1,
-        patience=3
+        T_max=EPOCHS,
+        eta_min=1e-6
     )
 
     # criterion = FocalLoss(alpha=get_alpha(train_dataset.stats, num_classes=43, beta=0.999).to(DEVICE), gamma=2.0)
@@ -147,7 +155,8 @@ def train():
                 list_label.extend(labels_val.cpu().numpy())
 
         accuracy = accuracy_score(list_label, list_prediction)
-        scheduler.step(accuracy)
+        # scheduler.step(accuracy)
+        scheduler.step()
         avg_val_loss = total_loss_val / len(test_dataloader)
 
         print(f"Val Loss: {avg_val_loss:.4f} | Accuracy: {accuracy:.4f}")
