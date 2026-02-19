@@ -2,7 +2,7 @@ import os
 import torch
 import numpy as np
 from torch.optim import Adam
-from torch.optim.lr_scheduler import ReduceLROnPlateau, CosineAnnealingLR
+from torch.optim.lr_scheduler import ReduceLROnPlateau, CosineAnnealingLR, CosineAnnealingWarmRestarts
 from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
 from torchvision import transforms
@@ -84,6 +84,7 @@ def train():
     test_dataloader = DataLoader(test_dataset, batch_size=BATCH_SIZE, shuffle=False, num_workers=WORKERS)
 
     model = MambaClassifier(dims=3, depth=DEEP, num_classes=43).to(DEVICE)
+
     optimizer = Adam(model.parameters(), lr=LR)
     # scheduler = ReduceLROnPlateau(
     #     optimizer,
@@ -92,11 +93,13 @@ def train():
     #     patience=3
     # )
 
-    scheduler = CosineAnnealingLR(
-        optimizer,
-        T_max=EPOCHS,
-        eta_min=1e-6
-    )
+    # scheduler = CosineAnnealingLR(
+    #     optimizer,
+    #     T_max=EPOCHS,
+    #     eta_min=1e-6
+    # )
+
+    scheduler = CosineAnnealingWarmRestarts(optimizer, T_0=10, T_mult=2)
 
     # criterion = FocalLoss(alpha=get_alpha(train_dataset.stats, num_classes=43, beta=0.999).to(DEVICE), gamma=2.0)
     criterion = nn.CrossEntropyLoss()
