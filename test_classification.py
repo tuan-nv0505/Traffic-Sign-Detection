@@ -51,7 +51,7 @@ def test():
         transforms.Normalize(mean=mean, std=std)
     ])
 
-    test_dataset = GTSRBDataset(root='./data/gtsrb', split='test', transforms=transforms_test)
+    test_dataset = GTSRBDataset(root=PATH_DATA, split='test', transforms=transforms_test)
     test_dataloader = DataLoader(
         dataset=test_dataset,
         batch_size=64,
