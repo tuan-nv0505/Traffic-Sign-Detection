@@ -30,7 +30,7 @@ SIZE = args.size
 Dataset = GTSRBDataset
 
 
-def get_alpha(stats, num_classes=151, beta=0.999):
+def get_alpha(stats, num_classes=43, beta=0.999):
     counts = np.array([stats.get(i, 0) for i in range(num_classes)], dtype=np.float64)
 
     effective_num = (1.0 - np.power(beta, counts)) / (1.0 - beta)
@@ -61,8 +61,8 @@ def train():
             saturation=0.1
         ),
         transforms.RandomAffine(
-            degrees=11,
-            translate=(0.16, 0.16),
+            degrees=10,
+            translate=(0.15, 0.15),
             scale=(0.8, 1.2)
         ),
         transforms.ToTensor(),
