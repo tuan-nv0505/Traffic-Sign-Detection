@@ -18,7 +18,7 @@ args = get_args()
 DEVICE = torch.device(args.device)
 TRAINED = args.trained
 SIZE = args.size
-PATH_DATA = './data/gtsrb'
+PATH_DATA = args.path_data
 
 def plot_confusion_matrix(list_label, list_prediction, num_classes=43):
     cm = confusion_matrix(list_label, list_prediction)
