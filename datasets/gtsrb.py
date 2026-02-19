@@ -21,7 +21,6 @@ class GTSRBDataset(Dataset):
 
         self.labels = df["ClassId"].astype(int).values
         self.stats = df["ClassId"].astype(int).value_counts().sort_index().to_dict()
-        print(self.stats)
         self.categories = list(self.stats.keys())
 
     def __len__(self):

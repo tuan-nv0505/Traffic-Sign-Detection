@@ -12,6 +12,7 @@ data/
 
 trained/
 tensorboard/
+log_train/
 
 # Distribution / packaging
 .Python
