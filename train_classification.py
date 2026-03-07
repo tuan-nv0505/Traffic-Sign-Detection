@@ -2,18 +2,17 @@ import os
 import torch
 import numpy as np
 from torch.optim import Adam
-from torch.optim.lr_scheduler import ReduceLROnPlateau, CosineAnnealingLR, CosineAnnealingWarmRestarts
+from torch.optim.lr_scheduler import CosineAnnealingWarmRestarts
 from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
 from torchvision import transforms
-from sklearn.metrics import f1_score, accuracy_score
+from sklearn.metrics import accuracy_score
 from tqdm.autonotebook import tqdm
 import torch.nn as nn
 
 from datasets.gtsrb import GTSRBDataset
 from models.classification.mamba_classifier import MambaClassifier
-from models.loss import FocalLoss
-from utils.classification import get_args, get_mean_and_std
+from utils import get_args
 
 args = get_args()
 

@@ -5,6 +5,7 @@ from torchvision.models.detection.anchor_utils import AnchorGenerator
 from torchvision.ops import MultiScaleRoIAlign
 from torchvision.models.detection.roi_heads import RoIHeads
 from torchvision.models.detection.transform import GeneralizedRCNNTransform
+from pprint import pprint
 
 from models.detection.extractor import FeatureMapExtractor
 from models.detection.rpn import RegionProposalNetwork, RPNHead
@@ -14,6 +15,7 @@ class FasterRCNN(nn.Module):
     def __init__(
             self,
             num_classes=None,
+            weight=None,
             # transform parameters
             min_size=600,
             max_size=1333,
@@ -72,9 +74,9 @@ class FasterRCNN(nn.Module):
         box_predictor = FastRCNNPredictor(1024, num_classes)
 
         self.roi_heads = RoIHeads(
-            box_roi_pool,
-            box_head,
-            box_predictor,
+            box_roi_pool=box_roi_pool,
+            box_head=box_head,
+            box_predictor=box_predictor,
             fg_iou_thresh=box_fg_iou_thresh,
             bg_iou_thresh=box_bg_iou_thresh,
             batch_size_per_image=box_batch_size_per_image,
@@ -138,21 +140,21 @@ class FastRCNNPredictor(nn.Module):
         return self.cls_score(x), self.bbox_pred(x)
 
 if __name__ == '__main__':
-    img1 = torch.rand(3, 800, 1360)
-    img2 = torch.rand(3, 800, 1360)
-
-    images = [img1, img2]
-
-    targets = [
-        {
-            'boxes': torch.tensor([[100, 100, 200, 200], [1000, 1200, 1100, 1300]], dtype=torch.float32),
-            'labels': torch.tensor([0, 1], dtype=torch.int64),
-        },
-        {
-            'boxes': torch.tensor([[50, 50, 150, 150]], dtype=torch.float32),
-            'labels': torch.tensor([1], dtype=torch.int64),
-        }
-    ]
+    # img1 = torch.rand(3, 800, 1360)
+    # img2 = torch.rand(3, 800, 1360)
+    #
+    # images = [img1, img2]
+    #
+    # targets = [
+    #     {
+    #         'boxes': torch.tensor([[100, 100, 200, 200], [1000, 1200, 1100, 1300]], dtype=torch.float32),
+    #         'labels': torch.tensor([0, 1], dtype=torch.int64),
+    #     },
+    #     {
+    #         'boxes': torch.tensor([[50, 50, 150, 150]], dtype=torch.float32),
+    #         'labels': torch.tensor([1], dtype=torch.int64),
+    #     }
+    # ]
     net = FasterRCNN(num_classes=44)
-    out = net(images, targets)
-    print(out)
+    # out = net(images, targets)
+    # pprint(out)
