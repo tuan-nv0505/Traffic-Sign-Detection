@@ -12,7 +12,7 @@ def get_args():
     parser.add_argument("--epochs", type=int, default=60)
     parser.add_argument("--lr", type=float, default=1e-4)
     parser.add_argument("--device", type=str, default="cpu")
-    parser.add_argument("--path_data", type=str, default="data/tt100k")
+    parser.add_argument("--path_data", type=str, default="data/gtsrb")
     parser.add_argument("--folds", type=int, default=5)
     parser.add_argument("--workers", type=int, default=4)
     parser.add_argument("--trained", type=str, default="trained")

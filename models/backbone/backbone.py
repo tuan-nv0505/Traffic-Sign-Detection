@@ -40,7 +40,12 @@ class BackBone(nn.Module):
 
     def forward(self, x: torch.Tensor):
         x = self.pre_embd(x)
-        for layer in self.layers:
+        for i, layer in enumerate(self.layers):
             x = layer(x)
         x = self.out_norm(x)
         return x
+
+if __name__ == '__main__':
+    model = BackBone(dims=3, depth=3)
+    x = torch.randn(1, 3, 448, 448)
+    out = model(x)

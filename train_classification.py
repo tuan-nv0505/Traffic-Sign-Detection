@@ -50,10 +50,10 @@ def train():
     os.makedirs(TRAINED, exist_ok=True)
     os.makedirs(LOGGING, exist_ok=True)
 
-    temp_ds = Dataset(root=PATH_DATA, split='train', transforms=transforms.Compose([
-        transforms.Resize(SIZE), transforms.ToTensor()
-    ]))
-    mean, std = get_mean_and_std(temp_ds, workers=WORKERS)
+    # temp_ds = Dataset(root=PATH_DATA, split='train', transforms=transforms.Compose([
+    #     transforms.Resize(SIZE), transforms.ToTensor()
+    # ]))
+    # mean, std = get_mean_and_std(temp_ds, workers=WORKERS)
 
     transforms_train = transforms.Compose([
         transforms.Resize(SIZE),
@@ -68,13 +68,19 @@ def train():
             scale=(0.8, 1.2)
         ),
         transforms.ToTensor(),
-        transforms.Normalize(mean=mean, std=std)
+        transforms.Normalize(
+            mean=(0.3417820930480957, 0.3126334846019745, 0.3216340243816376),
+            std=(0.27580520510673523, 0.2633080780506134, 0.26914146542549133)
+        )
     ])
 
     transforms_test = transforms.Compose([
         transforms.Resize(SIZE),
         transforms.ToTensor(),
-        transforms.Normalize(mean=mean, std=std)
+        transforms.Normalize(
+            mean=(0.3417820930480957, 0.3126334846019745, 0.3216340243816376),
+            std=(0.27580520510673523, 0.2633080780506134, 0.26914146542549133)
+        )
     ])
 
     train_dataset = Dataset(root=PATH_DATA, transforms=transforms_train, split='train')

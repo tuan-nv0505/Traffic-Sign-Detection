@@ -40,15 +40,18 @@ def plot_confusion_matrix(list_label, list_prediction, num_classes=43):
 
 
 def test():
-    temp_ds = GTSRBDataset(root=PATH_DATA, split='train', transforms=transforms.Compose([
-        transforms.Resize(SIZE), transforms.ToTensor()
-    ]))
+    # temp_ds = GTSRBDataset(root=PATH_DATA, split='train', transforms=transforms.Compose([
+    #     transforms.Resize(SIZE), transforms.ToTensor()
+    # ]))
 
-    mean, std = get_mean_and_std(temp_ds, workers=4)
+    # mean, std = get_mean_and_std(temp_ds, workers=4)
     transforms_test = transforms.Compose([
         transforms.Resize(SIZE),
         transforms.ToTensor(),
-        transforms.Normalize(mean=mean, std=std)
+        transforms.Normalize(
+            mean=(0.3417820930480957, 0.3126334846019745, 0.3216340243816376),
+            std=(0.27580520510673523, 0.2633080780506134, 0.26914146542549133)
+        )
     ])
 
     test_dataset = GTSRBDataset(root=PATH_DATA, split='test', transforms=transforms_test)
@@ -61,6 +64,7 @@ def test():
     )
 
     checkpoint = torch.load(os.path.join(TRAINED, 'best_checkpoint.pth'), map_location=DEVICE, weights_only=True)
+    print(f'Accuracy: {checkpoint["best_accuracy"]}')
     model = MambaClassifier(dims=3, depth=3).to(DEVICE)
     model.load_state_dict(checkpoint['state_dict'])
 
