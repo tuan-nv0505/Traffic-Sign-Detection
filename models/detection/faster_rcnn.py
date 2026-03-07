@@ -49,7 +49,7 @@ class FasterRCNN(nn.Module):
         self.extractor = FeatureMapExtractor(in_channels=3, features='last', out_channels=64, depth=3)
 
         if rpn_anchor_generator is None:
-            anchor_sizes = ((32, 64, 128),)
+            anchor_sizes = ((32, 64, 128, 256),)
             aspect_ratios = ((0.5, 1.0, 2.0),) * len(anchor_sizes)
             rpn_anchor_generator = AnchorGenerator(anchor_sizes, aspect_ratios)
 
@@ -140,21 +140,22 @@ class FastRCNNPredictor(nn.Module):
         return self.cls_score(x), self.bbox_pred(x)
 
 if __name__ == '__main__':
-    # img1 = torch.rand(3, 800, 1360)
-    # img2 = torch.rand(3, 800, 1360)
-    #
-    # images = [img1, img2]
-    #
-    # targets = [
-    #     {
-    #         'boxes': torch.tensor([[100, 100, 200, 200], [1000, 1200, 1100, 1300]], dtype=torch.float32),
-    #         'labels': torch.tensor([0, 1], dtype=torch.int64),
-    #     },
-    #     {
-    #         'boxes': torch.tensor([[50, 50, 150, 150]], dtype=torch.float32),
-    #         'labels': torch.tensor([1], dtype=torch.int64),
-    #     }
-    # ]
+    img1 = torch.rand(3, 800, 1360)
+    img2 = torch.rand(3, 800, 1360)
+
+    images = [img1, img2]
+
+    targets = [
+        {
+            'boxes': torch.tensor([[100, 100, 200, 200], [1000, 1200, 1100, 1300]], dtype=torch.float32),
+            'labels': torch.tensor([0, 1], dtype=torch.int64),
+        },
+        {
+            'boxes': torch.tensor([[50, 50, 150, 150]], dtype=torch.float32),
+            'labels': torch.tensor([1], dtype=torch.int64),
+        }
+    ]
     net = FasterRCNN(num_classes=44)
-    # out = net(images, targets)
-    # pprint(out)
+    net.eval()
+    out = net(images, targets)
+    pprint(out)

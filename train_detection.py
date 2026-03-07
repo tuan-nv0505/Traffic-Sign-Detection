@@ -98,8 +98,6 @@ def train():
                 targets = [{k: v.to(DEVICE) for k, v in t.items()} for t in targets]
 
                 outputs = model(images, targets)
-                print(f"pred: {outputs[0]['boxes']}")
-                print(f"gt: {targets[0]['boxes']}")
 
                 metric.update(outputs, targets)
 
