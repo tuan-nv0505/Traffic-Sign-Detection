@@ -46,7 +46,7 @@ class FasterRCNN(nn.Module):
     ):
         super().__init__()
 
-        self.extractor = FeatureMapExtractor(in_channels=3, features='last', out_channels=64, depth=3, ssm_d_state=8)
+        self.extractor = FeatureMapExtractor(in_channels=3, features='last', out_channels=64, depth=3, ssm_d_state=8, weight=weight)
 
         if rpn_anchor_generator is None:
             anchor_sizes = ((32, 64, 128, 256),)
