@@ -98,6 +98,8 @@ def train():
                 targets = [{k: v.to(DEVICE) for k, v in t.items()} for t in targets]
 
                 outputs = model(images, targets)
+                print(f"pred: {outputs[0]['boxes'][0]}")  # Xem tọa độ dự đoán đầu tiên
+                print(f"gt: {targets[0]['boxes'][0]}")  # Xem tọa độ nhãn thật đầu tiên
 
                 metric.update(outputs, targets)
 
