@@ -97,7 +97,7 @@ def train():
                 images = [img.to(DEVICE) for img in images]
                 targets = [{k: v.to(DEVICE) for k, v in t.items()} for t in targets]
 
-                outputs = model(images)
+                outputs = model(images, targets)
 
                 metric.update(outputs, targets)
 
