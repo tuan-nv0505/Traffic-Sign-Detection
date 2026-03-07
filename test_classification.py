@@ -1,12 +1,15 @@
 import os
 
 import matplotlib.pyplot as plt
+import numpy as np
 import seaborn as sns
 import torch
 from sklearn.metrics import confusion_matrix
 from torch.utils.data import DataLoader
 from torchvision.transforms import transforms
 from tqdm import tqdm
+import cv2
+import torch.nn.functional as F
 
 from datasets.gtsrb import GTSRBDataset
 from models.classification.mamba_classifier import MambaClassifier
@@ -38,7 +41,7 @@ def plot_confusion_matrix(list_label, list_prediction, num_classes=43):
     plt.savefig('confusion_matrix.png', dpi=300)
 
 
-def test():
+def generate_confusion_matrix():
     # temp_ds = GTSRBDataset(root=PATH_DATA, split='train', transforms=transforms.Compose([
     #     transforms.Resize(SIZE), transforms.ToTensor()
     # ]))
@@ -64,7 +67,7 @@ def test():
 
     checkpoint = torch.load(os.path.join(TRAINED, 'best_checkpoint.pth'), map_location=DEVICE, weights_only=True)
     print(f'Accuracy: {checkpoint["best_accuracy"]}')
-    model = MambaClassifier(dims=3, depth=3).to(DEVICE)
+    model = MambaClassifier(dims=3, depth=3, ssm_d_state=8).to(DEVICE)
     model.load_state_dict(checkpoint['state_dict'])
 
     list_prediction, list_label = [], []
@@ -78,5 +81,48 @@ def test():
 
     plot_confusion_matrix(list_label, list_prediction, num_classes=43)
 
+def inference():
+    transforms_test = transforms.Compose([
+        transforms.Resize(SIZE),
+        transforms.ToTensor(),
+        transforms.Normalize(
+            mean=(0.3417820930480957, 0.3126334846019745, 0.3216340243816376),
+            std=(0.27580520510673523, 0.2633080780506134, 0.26914146542549133)
+        )
+    ])
+
+    test_dataset_non_transform = GTSRBDataset(root=PATH_DATA, split='test')
+    test_dataset = GTSRBDataset(root=PATH_DATA, split='test', transforms=transforms_test)
+    test_dataloader = DataLoader(
+        dataset=test_dataset,
+        batch_size=1,
+        shuffle=False,
+        num_workers=4,
+        drop_last=False
+    )
+
+    checkpoint = torch.load(os.path.join(TRAINED, 'best_checkpoint.pth'), map_location=DEVICE, weights_only=True)
+    model = MambaClassifier(dims=3, depth=3, ssm_d_state=8).to(DEVICE)
+    model.load_state_dict(checkpoint['state_dict'])
+    to_tensor = transforms.ToTensor()
+
+    with torch.no_grad():
+        for i, (img, label) in enumerate(test_dataloader):
+            img, label = img.to(DEVICE), label.cpu().numpy()
+            confidence, _ = torch.max(F.softmax(model(img), dim=1), dim=1)
+
+            img_show, label_show = test_dataset_non_transform[i]
+
+            img_show = to_tensor(img_show).numpy()
+            img_show = img_show.transpose(1, 2, 0)
+            img_show = (img_show * 255).astype(np.uint8)
+            img_show = img_show[:, :, ::-1]
+            cv2.imshow(f'{confidence.item() * 100:.2f}%: {label.item()} - label: {label_show}', img_show)
+            cv2.waitKey(0)
+
+        cv2.destroyAllWindows()
+
+
 if __name__ == '__main__':
-    test()
+    # generate_confusion_matrix()
+    inference()

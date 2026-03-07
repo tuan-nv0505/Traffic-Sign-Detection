@@ -40,7 +40,6 @@ class BackBone(nn.Module):
 
     def forward(self, x: torch.Tensor):
         x = self.pre_embd(x)
-        print(f'pre embd {x.shape}')
         for i, layer in enumerate(self.layers):
             x = layer(x)
         x = self.out_norm(x)
