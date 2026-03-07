@@ -2,6 +2,7 @@ import torch
 from torch import nn as nn
 from torch.nn import functional as F
 from torchinfo import summary
+from pprint import pprint
 
 from models.backbone.backbone import BackBone
 
@@ -38,15 +39,18 @@ class FeaturePyramidNetwork(nn.Module):
 
 
 class FeatureMapExtractor(BackBone):
-    def __init__(self, in_channels=3, features='last', out_channels=128, depth=3, checkpoint_path=None):
-        super().__init__(dims=in_channels, depth=depth)
+    def __init__(self, in_channels=3, features='last', out_channels=128, depth=4, ssm_d_state=16, weight=None):
+        super().__init__(dims=in_channels, depth=depth, ssm_d_state=ssm_d_state)
         self.features = features
         self.out_channels = out_channels
-        if checkpoint_path:
-            self.load_state_dict(
-                torch.load(checkpoint_path, map_location=self.device, weights_only=True),
-                strict=False
-            )
+        if weight:
+            result = self.load_state_dict(weight, strict=False)
+            print("Missing keys:", len(result.missing_keys))
+            print("Unexpected keys:", len(result.unexpected_keys))
+            print("Missing keys list:")
+            pprint(result.missing_keys)
+            print("Unexpected keys list:")
+            pprint(result.unexpected_keys)
 
         if features == 'last':
             dims = self.dims[-1:]
@@ -63,7 +67,7 @@ class FeatureMapExtractor(BackBone):
 
     def forward(self, x: torch.Tensor) -> list[torch.Tensor]:
         outputs = []
-
+        x = self.pre_embd(x)
         for i in range(0, len(self.layers), 2):
             downsample = self.layers[i]
             vss_block = self.layers[i + 1]
@@ -79,8 +83,17 @@ class FeatureMapExtractor(BackBone):
         return self.fpn(outputs)
 
 if __name__ == '__main__':
-    net = FeatureMapExtractor(in_channels=3, features='last', out_channels=64, depth=3)
+    checkpoint = torch.load('../../best_checkpoint.pth', map_location='cpu', weights_only=True)
+    new_checkpoint = {}
+    for k, v in checkpoint['state_dict'].items():
+        if k.startswith("backbone."):
+            new_k = k[len("backbone."):]
+        else:
+            new_k = k
+        new_checkpoint[new_k] = v
+    net = FeatureMapExtractor(in_channels=3, features='last', out_channels=64, depth=3, ssm_d_state=8, weight=new_checkpoint)
     x = torch.rand(1, 3, 608, 1024)
+    # summary(net, (1, 3, 608, 1024))
     out = net(x)
-    for x in out:
-        print(x.shape)
+    # for x in out:
+    #     print(x.shape)

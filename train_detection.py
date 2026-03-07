@@ -51,7 +51,14 @@ def train():
     )
 
     checkpoint = torch.load('best_checkpoint.pth', weights_only=True, map_location=DEVICE)
-    model = FasterRCNN(num_classes=43, weight=checkpoint['state_dict'], box_score_thresh=0.01).to(DEVICE)
+    new_checkpoint = {}
+    for k, v in checkpoint['state_dict'].items():
+        if k.startswith("backbone."):
+            new_k = k[len("backbone."):]
+        else:
+            new_k = k
+        new_checkpoint[new_k] = v
+    model = FasterRCNN(num_classes=43, weight=new_checkpoint, box_score_thresh=0.01).to(DEVICE)
     for name, param in model.named_parameters():
         if 'extractor' in name and 'fpn' not in name:
             param.requires_grad_(False)

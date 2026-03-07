@@ -220,7 +220,7 @@ if __name__ == '__main__':
         out_channels=64,
         depth=3,
         features='last',
-        checkpoint_path='../../best_checkpoint.pth'
+        weight='../../best_checkpoint.pth'
     )
 
     anchor_sizes = ((32, 64, 128),)

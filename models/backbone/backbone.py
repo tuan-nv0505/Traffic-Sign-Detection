@@ -8,7 +8,7 @@ from models.backbone.permute import Permute
 
 
 class BackBone(nn.Module):
-    def __init__(self, dims=3, depth=4):
+    def __init__(self, dims=3, depth=4, ssm_d_state=16):
         super().__init__()
         self.depth = depth
         self.pre_embd = ConvNet()
@@ -21,7 +21,7 @@ class BackBone(nn.Module):
                 out_dim=self.dims[i_layer + 1],
                 norm_layer=nn.LayerNorm,
             )
-            vss_block = VSSBlock(hidden_dim=self.dims[i_layer + 1], drop_path=0.0, ssm_d_state=8)
+            vss_block = VSSBlock(hidden_dim=self.dims[i_layer + 1], drop_path=0.0, ssm_d_state=ssm_d_state)
             self.layers.append(downsample)
             self.layers.append(vss_block)
 
@@ -40,6 +40,7 @@ class BackBone(nn.Module):
 
     def forward(self, x: torch.Tensor):
         x = self.pre_embd(x)
+        print(f'pre embd {x.shape}')
         for i, layer in enumerate(self.layers):
             x = layer(x)
         x = self.out_norm(x)

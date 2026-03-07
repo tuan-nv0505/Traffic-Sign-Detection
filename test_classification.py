@@ -10,7 +10,7 @@ from tqdm import tqdm
 
 from datasets.gtsrb import GTSRBDataset
 from models.classification.mamba_classifier import MambaClassifier
-from classification import get_args
+from utils import get_args
 
 args = get_args()
 
