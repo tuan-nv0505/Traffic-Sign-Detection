@@ -2,7 +2,7 @@ import os
 import torch
 import numpy as np
 from torch.optim import Adam
-from torch.optim.lr_scheduler import CosineAnnealingWarmRestarts
+from torch.optim.lr_scheduler import CosineAnnealingWarmRestarts, ReduceLROnPlateau
 from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
 from torchinfo import summary
@@ -92,12 +92,7 @@ def train():
     model = MambaClassifier(dims=3, depth=DEEP, ssm_d_state=16, num_classes=43).to(DEVICE)
 
     optimizer = Adam(model.parameters(), lr=LR)
-    # scheduler = ReduceLROnPlateau(
-    #     optimizer,
-    #     mode='max',
-    #     factor=0.1,
-    #     patience=3
-    # )
+    scheduler = ReduceLROnPlateau(optimizer, mode='max', factor=0.1, patience=3)
 
     # scheduler = CosineAnnealingLR(
     #     optimizer,
@@ -121,7 +116,7 @@ def train():
             checkpoint = torch.load(checkpoint_path, map_location=DEVICE)
             model.load_state_dict(checkpoint["state_dict"])
             optimizer.load_state_dict(checkpoint["optimizer"])
-            # scheduler.load_state_dict(checkpoint["scheduler"])
+            scheduler.load_state_dict(checkpoint["scheduler"])
             start_epoch = checkpoint["epoch"]
             best_accuracy = checkpoint.get("best_accuracy", 0)
             print(f"Resuming from epoch {start_epoch + 1}")
@@ -165,7 +160,7 @@ def train():
                 list_label.extend(labels_val.cpu().numpy())
 
         accuracy = accuracy_score(list_label, list_prediction)
-        # scheduler.step(accuracy)
+        scheduler.step(accuracy)
         # scheduler.step()
         avg_val_loss = total_loss_val / len(test_dataloader)
 
@@ -181,7 +176,7 @@ def train():
             "state_dict": model.state_dict(),
             "epoch": epoch + 1,
             "optimizer": optimizer.state_dict(),
-            # 'scheduler': scheduler.state_dict(),
+            'scheduler': scheduler.state_dict(),
             "best_accuracy": best_accuracy,
         }
 
