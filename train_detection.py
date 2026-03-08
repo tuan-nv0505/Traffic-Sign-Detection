@@ -84,14 +84,8 @@ def train():
             optimizer.zero_grad()
             losses = model(images, targets)
             final_loss = sum(loss for loss in losses.values())
-            if torch.isnan(final_loss):
-                print("NaN in Loss!")
-                for k, v in losses.items():
-                    print(f"- {k}: {v.item()}")
-                print(f"Targets error: {targets}")
-                exit()
 
-            losses.backward()
+            final_loss.backward()
             optimizer.step()
 
             total_loss_train += losses.item()
