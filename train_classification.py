@@ -62,8 +62,8 @@ def train():
             saturation=0.1
         ),
         transforms.RandomAffine(
-            degrees=10,
-            translate=(0.15, 0.15),
+            degrees=15,
+            translate=(0.2, 0.2),
             scale=(0.8, 1.2)
         ),
         transforms.ToTensor(),
@@ -108,12 +108,12 @@ def train():
 
     # criterion = FocalLoss(alpha=get_alpha(train_dataset.stats, num_classes=43, beta=0.999).to(DEVICE), gamma=2.0)
     criterion = nn.CrossEntropyLoss()
-    writer = SummaryWriter(LOGGING)
+    writer = SummaryWriter(os.path.join(TRAINED, 'classification'))
 
     start_epoch = 0
     best_accuracy = 0
 
-    checkpoint_path = os.path.join(TRAINED, 'checkpoint.pth')
+    checkpoint_path = os.path.join(TRAINED, '/classification/checkpoint.pth')
     if LOAD_CHECKPOINT and os.path.exists(checkpoint_path):
         try:
             checkpoint = torch.load(checkpoint_path, map_location=DEVICE)
