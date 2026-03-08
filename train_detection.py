@@ -58,7 +58,7 @@ def train():
         else:
             new_k = k
         new_checkpoint[new_k] = v
-    model = FasterRCNN(num_classes=43, weight=new_checkpoint).to(DEVICE)
+    model = FasterRCNN(num_classes=44, weight=new_checkpoint).to(DEVICE)
     for name, param in model.named_parameters():
         if 'extractor' in name and 'fpn' not in name:
             param.requires_grad_(False)

@@ -17,8 +17,8 @@ class FasterRCNN(nn.Module):
             num_classes=None,
             weight=None,
             # transform parameters
-            min_size=600,
-            max_size=1333,
+            min_size=800,
+            max_size=1360,
             image_mean=(0.485, 0.456, 0.406),
             image_std=(0.229, 0.224, 0.225),
             # RPN parameters

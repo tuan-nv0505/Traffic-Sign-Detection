@@ -62,9 +62,10 @@ class GTSDBDataset(Dataset):
 
     def __getitem__(self, idx):
         path = self.data[idx]['path']
+        labels = torch.as_tensor(self.data[idx]['labels'], dtype=torch.int64)
         target = {
-            'boxes': torch.tensor(self.data[idx]['boxes'], dtype=torch.float32),
-            'labels': torch.tensor(self.data[idx]['labels'], dtype=torch.int64),
+            'boxes': torch.as_tensor(self.data[idx]['boxes'], dtype=torch.float32),
+            'labels': labels + 1,
         }
         image = Image.open(path)
         image = image.convert('RGB')
