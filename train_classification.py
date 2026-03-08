@@ -63,8 +63,8 @@ def train():
             saturation=0.1
         ),
         transforms.RandomAffine(
-            degrees=15,
-            translate=(0.2, 0.2),
+            degrees=10,
+            translate=(0.15, 0.15),
             scale=(0.8, 1.2)
         ),
         transforms.ToTensor(),
