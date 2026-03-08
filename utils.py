@@ -20,6 +20,7 @@ def get_args():
     parser.add_argument("--load_checkpoint", action="store_true")
     parser.add_argument("--deep", type=int, default=4)
     parser.add_argument("--size", nargs=2, type=int, metavar=("H, W"), default=(48, 48))
+    parser.add_argument('--load_weights', action='store_true')
 
     args = parser.parse_args()
     if args.size:
