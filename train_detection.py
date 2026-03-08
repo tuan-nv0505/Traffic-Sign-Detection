@@ -89,7 +89,7 @@ def train():
             optimizer.step()
 
             total_loss_train += final_loss.item()
-            progress_bar.set_postfix({"loss": f"{losses.item():.4f}"})
+            progress_bar.set_postfix({"loss": f"{final_loss.item():.4f}"})
 
         avg_train_loss = total_loss_train / len(train_dataloader)
         writer.add_scalar("Train/Loss", avg_train_loss, epoch)
