@@ -114,7 +114,8 @@ def train():
     start_epoch = 0
     best_accuracy = 0
 
-    checkpoint_path = os.path.join(TRAINED, '/classification/checkpoint.pth')
+    checkpoint_path = os.path.join(TRAINED, 'classification', 'checkpoint.pth')
+
     if LOAD_CHECKPOINT and os.path.exists(checkpoint_path):
         try:
             checkpoint = torch.load(checkpoint_path, map_location=DEVICE)
@@ -186,7 +187,7 @@ def train():
 
         torch.save(checkpoint_data, checkpoint_path)
         if is_best:
-            torch.save(checkpoint_data, os.path.join(TRAINED, 'classification/best_checkpoint.pth'))
+            torch.save(checkpoint_data, os.path.join(TRAINED, 'classification', 'best_checkpoint.pth'))
             print(f"--> [NEW BEST] Accuracy score improved to {best_accuracy:.4f}\n")
         else:
             print()
