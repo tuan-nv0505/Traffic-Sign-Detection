@@ -62,11 +62,11 @@ def train():
             contrast=0.2,
             saturation=0.1
         ),
-        # transforms.RandomAffine(
-        #     degrees=10,
-        #     translate=(0.15, 0.15),
-        #     scale=(0.8, 1.2)
-        # ),
+        transforms.RandomAffine(
+            degrees=10,
+            translate=(0.15, 0.15),
+            scale=(0.8, 1.2)
+        ),
         transforms.ToTensor(),
         transforms.Normalize(
             mean=(0.485, 0.456, 0.406),
