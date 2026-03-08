@@ -186,7 +186,7 @@ def train():
 
         torch.save(checkpoint_data, checkpoint_path)
         if is_best:
-            torch.save(checkpoint_data, os.path.join(TRAINED, 'best_checkpoint.pth'))
+            torch.save(checkpoint_data, os.path.join(TRAINED, 'classification/best_checkpoint.pth'))
             print(f"--> [NEW BEST] Accuracy score improved to {best_accuracy:.4f}\n")
         else:
             print()
