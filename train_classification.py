@@ -5,6 +5,7 @@ from torch.optim import Adam
 from torch.optim.lr_scheduler import CosineAnnealingWarmRestarts
 from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
+from torchinfo import summary
 from torchvision import transforms
 from sklearn.metrics import accuracy_score
 from tqdm.autonotebook import tqdm
@@ -46,8 +47,8 @@ def get_alpha(stats, num_classes=43, beta=0.999):
     return torch.FloatTensor(weights)
 
 def train():
-    os.makedirs(TRAINED, exist_ok=True)
-    os.makedirs(LOGGING, exist_ok=True)
+    os.makedirs(os.path.join(TRAINED, 'classification'), exist_ok=True)
+    os.makedirs(os.path.join(LOGGING, 'classification'), exist_ok=True)
 
     # temp_ds = Dataset(root=PATH_DATA, split='train', transforms=transforms.Compose([
     #     transforms.Resize(SIZE), transforms.ToTensor()
