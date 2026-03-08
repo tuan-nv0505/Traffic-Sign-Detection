@@ -88,7 +88,7 @@ def train():
     test_dataset = Dataset(root=PATH_DATA, transforms=transforms_test, split='test')
     test_dataloader = DataLoader(test_dataset, batch_size=BATCH_SIZE, shuffle=False, num_workers=WORKERS)
 
-    model = MambaClassifier(dims=3, depth=DEEP, num_classes=43).to(DEVICE)
+    model = MambaClassifier(dims=3, depth=DEEP, ssm_d_state=16, num_classes=43).to(DEVICE)
 
     optimizer = Adam(model.parameters(), lr=LR)
     # scheduler = ReduceLROnPlateau(
@@ -104,7 +104,7 @@ def train():
     #     eta_min=1e-6
     # )
 
-    scheduler = CosineAnnealingWarmRestarts(optimizer, T_0=10, T_mult=2)
+    # scheduler = CosineAnnealingWarmRestarts(optimizer, T_0=10, T_mult=2)
 
     # criterion = FocalLoss(alpha=get_alpha(train_dataset.stats, num_classes=43, beta=0.999).to(DEVICE), gamma=2.0)
     criterion = nn.CrossEntropyLoss()
@@ -119,7 +119,7 @@ def train():
             checkpoint = torch.load(checkpoint_path, map_location=DEVICE)
             model.load_state_dict(checkpoint["state_dict"])
             optimizer.load_state_dict(checkpoint["optimizer"])
-            scheduler.load_state_dict(checkpoint["scheduler"])
+            # scheduler.load_state_dict(checkpoint["scheduler"])
             start_epoch = checkpoint["epoch"]
             best_accuracy = checkpoint.get("best_accuracy", 0)
             print(f"Resuming from epoch {start_epoch + 1}")
@@ -164,7 +164,7 @@ def train():
 
         accuracy = accuracy_score(list_label, list_prediction)
         # scheduler.step(accuracy)
-        scheduler.step()
+        # scheduler.step()
         avg_val_loss = total_loss_val / len(test_dataloader)
 
         print(f"Val Loss: {avg_val_loss:.4f} | Accuracy: {accuracy:.4f}")
@@ -179,7 +179,7 @@ def train():
             "state_dict": model.state_dict(),
             "epoch": epoch + 1,
             "optimizer": optimizer.state_dict(),
-            'scheduler': scheduler.state_dict(),
+            # 'scheduler': scheduler.state_dict(),
             "best_accuracy": best_accuracy,
         }
 
