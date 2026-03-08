@@ -88,7 +88,7 @@ def train():
             final_loss.backward()
             optimizer.step()
 
-            total_loss_train += losses.item()
+            total_loss_train += final_loss.item()
             progress_bar.set_postfix({"loss": f"{losses.item():.4f}"})
 
         avg_train_loss = total_loss_train / len(train_dataloader)
