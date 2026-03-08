@@ -65,9 +65,9 @@ def generate_confusion_matrix():
         drop_last=False
     )
 
-    checkpoint = torch.load(os.path.join(TRAINED, 'best_checkpoint.pth'), map_location=DEVICE, weights_only=True)
+    checkpoint = torch.load(os.path.join(TRAINED, 'classification', 'best_checkpoint.pth'), map_location=DEVICE, weights_only=True)
     print(f'Accuracy: {checkpoint["best_accuracy"]}')
-    model = MambaClassifier(dims=3, depth=3, ssm_d_state=8).to(DEVICE)
+    model = MambaClassifier(dims=3, depth=4, ssm_d_state=16).to(DEVICE)
     model.load_state_dict(checkpoint['state_dict'])
 
     list_prediction, list_label = [], []
@@ -101,8 +101,8 @@ def inference():
         drop_last=False
     )
 
-    checkpoint = torch.load(os.path.join(TRAINED, 'best_checkpoint.pth'), map_location=DEVICE, weights_only=True)
-    model = MambaClassifier(dims=3, depth=3, ssm_d_state=8).to(DEVICE)
+    checkpoint = torch.load(os.path.join(TRAINED, 'classification', 'best_checkpoint.pth'), map_location=DEVICE, weights_only=True)
+    model = MambaClassifier(dims=3, depth=4, ssm_d_state=16).to(DEVICE)
     model.load_state_dict(checkpoint['state_dict'])
     to_tensor = transforms.ToTensor()
 
@@ -124,5 +124,5 @@ def inference():
 
 
 if __name__ == '__main__':
-    # generate_confusion_matrix()
-    inference()
+    generate_confusion_matrix()
+    # inference()
