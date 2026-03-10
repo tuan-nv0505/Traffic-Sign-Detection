@@ -65,7 +65,7 @@ def train():
         transforms.RandomAffine(
             degrees=10,
             translate=(0.15, 0.15),
-            scale=(0.9, 1.1)
+            scale=(0.95, 1.15)
         ),
         transforms.ToTensor(),
         transforms.Normalize(
