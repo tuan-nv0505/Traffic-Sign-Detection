@@ -2,7 +2,7 @@ import os
 import torch
 import numpy as np
 from torch.optim import Adam
-from torch.optim.lr_scheduler import CosineAnnealingWarmRestarts, ReduceLROnPlateau
+from torch.optim.lr_scheduler import CosineAnnealingWarmRestarts, ReduceLROnPlateau, CosineAnnealingLR
 from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
 from torchinfo import summary
@@ -94,13 +94,13 @@ def train():
     optimizer = Adam(model.parameters(), lr=LR)
     # scheduler = ReduceLROnPlateau(optimizer, mode='max', factor=0.1, patience=3)
 
-    # scheduler = CosineAnnealingLR(
-    #     optimizer,
-    #     T_max=EPOCHS,
-    #     eta_min=1e-6
-    # )
+    scheduler = CosineAnnealingLR(
+        optimizer,
+        T_max=EPOCHS,
+        eta_min=1e-6
+    )
 
-    scheduler = CosineAnnealingWarmRestarts(optimizer, T_0=10, T_mult=2)
+    # scheduler = CosineAnnealingWarmRestarts(optimizer, T_0=10, T_mult=2)
 
     # criterion = FocalLoss(alpha=get_alpha(train_dataset.stats, num_classes=43, beta=0.999).to(DEVICE), gamma=2.0)
     criterion = nn.CrossEntropyLoss()
