@@ -100,7 +100,7 @@ def train():
     #     eta_min=1e-6
     # )
 
-    scheduler = CosineAnnealingWarmRestarts(optimizer, T_0=20, T_mult=2)
+    scheduler = CosineAnnealingWarmRestarts(optimizer, T_0=10, T_mult=2)
 
     # criterion = FocalLoss(alpha=get_alpha(train_dataset.stats, num_classes=43, beta=0.999).to(DEVICE), gamma=2.0)
     criterion = nn.CrossEntropyLoss()

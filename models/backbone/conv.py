@@ -79,9 +79,9 @@ class ConvNet(nn.Module):
             nn.Conv2d(in_channels=64, out_channels=3, kernel_size=5, padding=2)
         )
 
-        self.alpha = nn.Parameter(torch.tensor(0.2))
-        self.beta = nn.Parameter(torch.tensor(0.6))
-        self.gamma = nn.Parameter(torch.tensor(0.2))
+        self.alpha = nn.Parameter(torch.tensor(0.3))
+        self.beta = nn.Parameter(torch.tensor(0.4))
+        self.gamma = nn.Parameter(torch.tensor(0.3))
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         channel_1_max_pool = self.max_pool(x)
