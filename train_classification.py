@@ -97,7 +97,7 @@ def train():
     scheduler = CosineAnnealingLR(
         optimizer,
         T_max=EPOCHS,
-        eta_min=1e-8
+        eta_min=1e-7
     )
 
     # scheduler = CosineAnnealingWarmRestarts(optimizer, T_0=10, T_mult=2)
